@@ -1,0 +1,86 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+  functions = "netlify/functions"
+
+# Netlify smart detection can mis-flag the SMTP env-var names used by the
+# contact-form function as secrets, even though no secret value is present.
+# If that happens, safelist the flagged strings via Site configuration >
+# Environment variables > SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES
+# (scanning remains enabled). That variable must be set in the dashboard,
+# not in this file.
+
+# The contact form posts directly to the Netlify function path below.
+# On Netlify, /.netlify/functions/* is served by the Functions runtime
+# and takes precedence over these redirect rules.
+
+# Next.js `output: 'export'` generates flat .html files (about.html, etc.).
+# Map each pretty URL to its exported file with a 200 rewrite so pages
+# work without the .html extension. Real files (robots.txt, sitemap.xml,
+# 404.html, images, /_next/static/*) are served directly and are never
+# intercepted by these rules.
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/how-it-works"
+  to = "/how-it-works.html"
+  status = 200
+
+[[redirects]]
+  from = "/solutions"
+  to = "/solutions.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects"
+  to = "/projects.html"
+  status = 200
+
+[[redirects]]
+  from = "/impact"
+  to = "/impact.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+# Unknown/nonexistent URLs: serve the custom 404 page with a real 404
+# status instead of rewriting everything to /index.html (previously 200).
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; frame-src https://www.google.com; script-src 'self' 'unsafe-inline'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; worker-src 'self'; upgrade-insecure-requests"

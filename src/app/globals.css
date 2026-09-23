@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-primary: #16a34a;
+  --color-primary-dark: #15803d;
+  --color-primary-light: #22c55e;
+  --color-secondary: #374151;
+  --color-accent: #f59e0b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-light: var(--color-primary-light);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --font-mono: monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6.5rem;
+}
+
+@keyframes go-green-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1445;
+  }
+}
+
+.go-green-flow {
+  animation: go-green-flow 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .go-green-flow {
+    animation: none;
+  }
+}
+
+/* ── STEP 5 pillar-card ambient SVG animations ─────── */
+
+@keyframes pillar-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+.pillar-flow {
+  animation: pillar-flow 8s linear infinite;
+}
+
+@keyframes pillar-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.pillar-spin {
+  animation: pillar-spin 28s linear infinite;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+@keyframes pillar-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.pillar-pulse {
+  animation: pillar-pulse 3.4s ease-in-out infinite;
+}
+
+@keyframes pillar-ring {
+  0% {
+    transform: scale(0.42);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.pillar-ring {
+  animation: pillar-ring 4.4s ease-out infinite;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .pillar-flow {
+    animation-duration: 3.6s;
+  }
+  .group:hover .pillar-spin {
+    animation-duration: 13s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillar-flow,
+  .pillar-spin,
+  .pillar-pulse,
+  .pillar-ring {
+    animation: none;
+  }
+}
+
+/* ── Mobile visibility safety net ────────────────────
+   Framer-motion ships entrance-reveal elements with inline opacity:0.
+   If hydration/scroll observers don't run, the page below the header
+   stays blank on phones. Force those elements visible below lg so
+   content is always accessible; desktop animations are untouched. */
+
+@media (max-width: 1023px) {
+  main [style*="opacity:0"]:not([data-hero-layer]) {
+    opacity: 1 !important;
+  }
+}
