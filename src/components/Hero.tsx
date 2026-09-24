@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -27,6 +27,18 @@ const DISPLAY_DURATION = 7000;
 const CROSSFADE_DURATION = 1800;
 const HERO_IMAGE_OPACITY = 0.9;
 
+const subscribePrefersReducedMotion = (onStoreChange: () => void) => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return () => {};
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+};
+
+const getPrefersReducedMotionSnapshot = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function Hero({
   title,
   subtitle,
@@ -34,26 +46,17 @@ export default function Hero({
   primaryCTA,
   secondaryCTA,
 }: HeroProps) {
-  const [startIndex] = useState(() => Math.floor(Math.random() * heroImages.length));
-  const [currentIndex, setCurrentIndex] = useState(startIndex);
-  const [nextIndex, setNextIndex] = useState((startIndex + 1) % heroImages.length);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribePrefersReducedMotion,
+    getPrefersReducedMotionSnapshot,
+    () => false
   );
-  const [imagesLoaded, setImagesLoaded] = useState<Record<number, boolean>>({});
+  const [imagesLoaded, setImagesLoaded] = useState<Record<number, boolean>>({ 0: true });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isMountedRef = useRef(true);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
 
   useEffect(() => {
     heroImages.forEach((src, index) => {
@@ -68,21 +71,28 @@ export default function Hero({
   }, []);
 
   const advanceSlideshow = useCallback(() => {
-    if (!isMountedRef.current || prefersReducedMotion) return;
+    if (!isMountedRef.current) return;
+
+    const next = (currentIndex + 1) % heroImages.length;
+
+    if (prefersReducedMotion) {
+      setIsTransitioning(false);
+      setNextIndex(next);
+      setCurrentIndex(next);
+      return;
+    }
 
     setIsTransitioning(true);
-    setNextIndex((currentIndex + 1) % heroImages.length);
+    setNextIndex(next);
 
     timeoutRef.current = setTimeout(() => {
       if (!isMountedRef.current) return;
-      setCurrentIndex(nextIndex);
+      setCurrentIndex(next);
       setIsTransitioning(false);
     }, CROSSFADE_DURATION);
-  }, [currentIndex, nextIndex, prefersReducedMotion]);
+  }, [currentIndex, prefersReducedMotion]);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
-
     timeoutRef.current = setTimeout(() => {
       if (!isMountedRef.current) return;
       advanceSlideshow();
@@ -91,7 +101,7 @@ export default function Hero({
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [advanceSlideshow, prefersReducedMotion]);
+  }, [advanceSlideshow]);
 
   const heroTextClass =
     "text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.85),0_1px_3px_rgba(0,0,0,0.8)]";
@@ -111,17 +121,12 @@ export default function Hero({
             zIndex: 0,
           }}
         >
-          {imagesLoaded[currentIndex] && (
-            <Image
-              src={heroImages[currentIndex]}
-              alt=""
-              fill
-              className="object-cover object-center"
-              priority
-              sizes="100vw"
-              quality={85}
-            />
-          )}
+          <img
+            src={heroImages[currentIndex]}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            draggable={false}
+          />
         </div>
 
         {!prefersReducedMotion && (

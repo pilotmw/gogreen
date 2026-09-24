@@ -51,11 +51,11 @@ export default function LeadershipSection() {
             Our Leadership
           </p>
           <h2 className="mt-4 text-3xl font-extrabold leading-[1.12] tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            People Driving the Green Transition
+            The People Behind Go Green
           </h2>
           <p className="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
-            Meet the people helping shape Go Green Resources&apos; vision for a
-            more circular, sustainable and commercially resilient future.
+            The people leading Go Green Resources across operations, finance,
+            environment and digital.
           </p>
         </div>
 

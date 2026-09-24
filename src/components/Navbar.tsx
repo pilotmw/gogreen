@@ -243,9 +243,7 @@ export default function Navbar() {
                   aria-haspopup="menu"
                   aria-expanded={solutionsOpen}
                   onMouseEnter={() => setSolutionsOpen(true)}
-                  onClick={() =>
-                    setSolutionsOpen((open) => (open ? false : true))
-                  }
+                  onClick={() => setSolutionsOpen(true)}
                   className={[
                     linkClasses(isSolutionsActive),
                     "flex items-center gap-1",

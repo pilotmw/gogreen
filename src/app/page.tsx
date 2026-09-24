@@ -6,7 +6,6 @@ import ThreePillarsSection from "@/components/ThreePillarsSection";
 import HomeNews from "@/components/HomeNews";
 import HomeGallery from "@/components/HomeGallery";
 import ImpactAreas from "@/components/ImpactAreas";
-import LeadershipSection from "@/components/LeadershipSection";
 import {
   RefreshCw,
   Users,
@@ -208,8 +207,6 @@ export default function Home() {
       </section>
 
       <HomeGallery />
-
-      <LeadershipSection />
 
       <section
         className="py-12 md:py-16"
