@@ -25,12 +25,16 @@
 
    3. NEW: FOUNDING STORY TIMELINE. Year founded plus milestones,
       using the same numbered 01/02/03 marker style as the Circular
-      Model. All dates and milestones are PLACEHOLDERS.
+      Model. Milestone 01 carries the client-supplied year 2026;
+      milestones 02 and 03 are genuinely undated and say "Timing to be
+      confirmed". No "PLACEHOLDER" text and no "20XX" token is shown to
+      visitors.
 
    4. NEW: COMPANY INFO / LEGAL STRIP. The "Who We Are" info row now
       also carries legal entity name, registration number and year of
-      incorporation. The registration number and incorporation year are
-      marked placeholders and have NOT been invented.
+      incorporation. The registration number (COY-4A4SKYK) and year
+      (2026) were client-supplied on 2026-09-26 and are no longer
+      placeholders; neither has been verified against a registrar record.
 
    5. NEW: SUPPORTING PHOTO placeholder between Mission & Vision and
       Who We Serve, to break up the text/headshot layout. Marked as a
@@ -91,28 +95,58 @@ import { circularModelSteps, circularModelNamesSentence, stepDescription } from 
 const stages = circularModelSteps;
 
 /* ── FOUNDING STORY ───────────────────────────────────────────
-   ⚠ PLACEHOLDER DATES AND MILESTONES. No founding history has been
-   supplied by the client, so the years are written as "20XX" and
-   each entry says what belongs there. Replace before launch — do
-   not publish as-is. */
+   PARTIALLY SUPPLIED BY THE CLIENT 2026-09-26:
+     year of incorporation  2026  (milestone 01, and the legal strip)
+   The other two milestones are still undated. Their year cell reads
+   "Timing to be confirmed" instead of "20XX"; no date has been
+   invented for either.
+
+   WHY NO "PLACEHOLDER" TEXT ANYMORE (client decision 2026-09-26):
+   this array used to render the literal word "PLACEHOLDER" and the
+   token "20XX" in visitor-facing body text. "PLACEHOLDER" reads as an
+   unfinished draft and undercuts the credibility the rest of the
+   pre-operational reframe was for. Visitors now see only honest copy -
+   a real year where one exists, and an explicit "to be confirmed" where
+   it does not, which is the pattern the rest of the site already uses
+   ("Location to be confirmed", "Timing to be confirmed"). Every
+   remaining client instruction lives in the comments below rather than
+   on the page. */
 const milestones = [
   {
-    year: "20XX",
+    year: "2026",
     title: "Company founded",
-    description:
-      "PLACEHOLDER — confirm the founding year and how the company was established.",
+    // States only verified facts: the legal name, the country, and the
+    // year the client supplied. Nothing about the founding circumstances
+    // is asserted, because none has been confirmed. Replace with the real
+    // account of how the company was established if that is worth saying
+    // publicly - the current wording is deliberately thin rather than
+    // invented.
+    description: "Incorporated in Malawi as Go Green Resources Limited.",
   },
   {
-    year: "20XX",
+    // Was "20XX". Now reads as the site's existing "to be confirmed"
+    // pattern, matching <RoadmapPhases /> and <ProjectCard />. Not a date,
+    // and not a claim that a project exists.
+    year: "Timing to be confirmed",
     title: "First field project",
+    // Intent, not outcome - describes what this milestone will be.
+    // ORIGINAL: "PLACEHOLDER — confirm the first operating project:
+    // location, partner and year."
     description:
-      "PLACEHOLDER — confirm the first operating project: location, partner and year.",
+      "The first site where the full model — collection, conversion and livelihoods — is put into practice.",
+    // CLIENT: confirm the first operating project — location, partner and
+    // timing — and add them to the milestone.
   },
   {
-    year: "20XX",
+    year: "Timing to be confirmed",
     title: "First anchor partnership",
+    // Intent, not outcome. No partner is named, implied or counted.
+    // ORIGINAL: "PLACEHOLDER — confirm the first significant funder, buyer
+    // or delivery partner, and the year."
     description:
-      "PLACEHOLDER — confirm the first significant funder, buyer or delivery partner, and the year.",
+      "The first significant funder, buyer or delivery partner backing the model.",
+    // CLIENT: confirm the first significant funder, buyer or delivery
+    // partner, and the year, then name them here.
   },
 ];
 
@@ -314,9 +348,30 @@ export default function AboutPage() {
 
                 {/* ── LEGAL / REGISTRATION DETAIL ──
                     Added for credibility. The registered name is taken
-                    from existing site copy; the registration number and
-                    incorporation year have NOT been invented and are
-                    shown as placeholders. */}
+                    from existing site copy.
+
+                    SUPPLIED BY THE CLIENT 2026-09-26:
+                      registration number  COY-4A4SKYK
+                      year of incorporation 2026
+                    Both were placeholders ("-" plus an amber "Placeholder"
+                    badge) until then. The badges are now removed from these
+                    two fields only.
+
+                    NOT VERIFIED BY ME. I have no access to the Malawi
+                    registrar, so this is the client's number reproduced
+                    verbatim - it has not been checked against any official
+                    record. Worth confirming before launch, particularly
+                    that 2026 is the incorporation year and not, say, the
+                    year the certificate was issued.
+
+                    REMOVED 2026-09-26 at the client's request: a
+                    provenance line under this list reading "Registration
+                    number and year of incorporation supplied by the
+                    company. Milestones above remain to be confirmed." It
+                    was commentary addressed at a reviewer, not at a
+                    visitor. The facts it described now stand on their own
+                    in the fields above, so nothing is lost. Do not
+                    restore it. */}
                 <div className="!mt-6 border-t border-primary/10 pt-4">
                   <dt className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
                     Legal Entity
@@ -329,29 +384,17 @@ export default function AboutPage() {
                   <dt className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
                     Registration Number
                   </dt>
-                  <dd className="mt-1 flex flex-wrap items-center gap-2 text-gray-700">
-                    <span>—</span>
-                    <span className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-amber-700">
-                      Placeholder
-                    </span>
+                  <dd className="mt-1 text-gray-700">
+                    COY-4A4SKYK
                   </dd>
                 </div>
                 <div>
                   <dt className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
                     Year of Incorporation
                   </dt>
-                  <dd className="mt-1 flex flex-wrap items-center gap-2 text-gray-700">
-                    <span>—</span>
-                    <span className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-amber-700">
-                      Placeholder
-                    </span>
-                  </dd>
+                  <dd className="mt-1 text-gray-700">2026</dd>
                 </div>
               </dl>
-              <p className="mt-4 pl-5 text-xs leading-relaxed text-gray-500">
-                Registration number and year of incorporation to be confirmed by
-                the client.
-              </p>
             </div>
             <div className="space-y-5 text-base leading-relaxed text-gray-700 md:text-lg lg:col-span-7">
               <p>
@@ -367,12 +410,10 @@ export default function AboutPage() {
                   paragraph so a visitor learns it early rather than
                   inferring a track record that does not exist.
 
-                  The incorporation year is a PLACEHOLDER, matching the
-                  "Year of Incorporation —" field in the panel beside
-                  this text. The same style (rounded card, amber accent,
-                  bold label) is used as the existing "Placeholder" flags
-                  so the page keeps one visual language. Update the year
-                  in BOTH places when the client confirms it.
+                  The incorporation year was a PLACEHOLDER ([year] and a
+                  "-" in the panel beside this text) until the client
+                  supplied 2026 on 2026-09-26. Both places now read 2026 -
+                  if one is ever changed, change the other.
 
                   Tone is deliberately forward-looking, not apologetic:
                   the company is real, the model is real, the work has not
@@ -383,9 +424,15 @@ export default function AboutPage() {
                 </p>
                 <p className="mt-3 text-base leading-relaxed text-gray-800 md:text-lg">
                   Go Green Resources Limited was established in{" "}
-                  <span className="font-bold text-primary">[year]</span> to
+                  {/* Client-supplied 2026-09-26, matching the "Year of
+                      Incorporation" field in the panel beside this text.
+                      Previously the literal string "[year]". The year and
+                      the registration number come from the same client
+                      instruction; neither is verified against a registrar
+                      record by me. */}
+                  <span className="font-bold text-primary">2026</span> to
                   build circular economy solutions for Malawi. We are
-                  currently in our founding phase — building our team,
+                  currently in our founding phase - building our team,
                   structuring our first pilot projects, and engaging early
                   partners and funders.
                 </p>

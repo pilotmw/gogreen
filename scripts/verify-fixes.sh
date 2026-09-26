@@ -185,6 +185,35 @@ absent "no 'are delivery partners' claim"       "$ABOUT" 'Communities are delive
 absent "no project card badge says Ongoing"     "$PROJ"  '>Ongoing<'
 absent "no project card badge says Completed"   "$PROJ"  '>Completed<'
 
+# Client-supplied 2026-09-26: registration COY-4A4SKYK, incorporation 2026.
+# These assert the real values are PUBLISHED, and that no literal
+# placeholder token survives. Note the escaping: `count` runs `grep -o`, so
+# an unquoted "[year]" is a character class that would match any y/e/a/r and
+# pass for the wrong reason.
+exists "registration number published"           "$ABOUT" 'COY-4A4SKYK'
+exists "incorporation year in legal strip"       "$ABOUT" '>2026</dd>'
+absent "no literal [year] token"                 "$ABOUT" '\[year\]'
+# Client decision 2026-09-26: the timeline no longer prints "PLACEHOLDER" or
+# "20XX" at visitors. Milestone 01 shows the real year; 02 and 03 say
+# "Timing to be confirmed", the same wording <RoadmapPhases /> uses. These
+# `check` forms count the exact year cell, so they also pin the counts - a
+# plain `exists` would not notice a milestone going missing.
+#
+# Scoped to the OLD milestone strings rather than the bare word "PLACEHOLDER":
+# the team-photo block further down the page still labels itself
+# "Placeholder image" and is a separate, still-open decision. Asserting the
+# bare word here would fail for that block and would tempt someone to delete
+# a check rather than raise the real question.
+absent "no old milestone PLACEHOLDER copy"       "$ABOUT" 'PLACEHOLDER [-—] confirm'
+absent "no 20XX year token"                      "$ABOUT" '20XX'
+check "exactly 1 milestone dated 2026"           "$(count "$ABOUT" 'text-primary">2026</p>')" "1"
+check "exactly 2 milestones say to be confirmed" "$(count "$ABOUT" 'text-primary">Timing to be confirmed</p>')" "2"
+# The provenance line under the legal strip was removed at the client's request.
+absent "no 'supplied by the company' note"       "$ABOUT" 'supplied by the company'
+# The footer previously said "solutions that transform waste…", an
+# operational claim the first audit missed.
+absent "footer makes no 'that transform' claim"  "$INDEX" 'that transform'
+
 # The brief's hard constraint: reframing the tense must not cost the site
 # its technical substance. These live on /solutions and /projects, not the
 # homepage - the first pass of these assertions wrongly pointed at $INDEX

@@ -52,9 +52,23 @@ export default function Footer() {
                 className="h-12 w-auto brightness-0 invert"
               />
             </div>
-            <p className="text-gray-300 text-sm max-w-md">
-              Go Green Resources Limited is a Malawian environmental enterprise building circular economy solutions that transform waste and underused resources into clean energy, recovered materials, and sustainable livelihoods.
-            </p>
+              <p className="text-gray-300 text-sm max-w-md">
+                {/* PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "…is a
+                    Malawian environmental enterprise BUILDING circular
+                    economy solutions THAT TRANSFORM waste and underused
+                    resources into…". An earlier pass corrected the
+                    "develops" wording but left "that transform", which is
+                    still a claim that the transformation is happening -
+                    this was missed by the first site-wide audit. ->
+                    "designed to turn". The three outputs UNCHANGED.
+                    Registration number COY-4A4SKYK is deliberately NOT in
+                    the footer: the About page carries it prominently, and
+                    repeating it here adds nothing. */}
+                Go Green Resources Limited is a Malawian environmental
+                enterprise building circular economy solutions designed to
+                turn waste and underused resources into clean energy,
+                recovered materials, and sustainable livelihoods.
+              </p>
           </div>
 
           <div>
