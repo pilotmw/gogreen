@@ -1,5 +1,55 @@
 "use client";
 
+/* ───────────────────────────────────────────────────────────────
+   NAVBAR — WHAT WAS FIXED (client review)
+
+   BUG: "SOLUTIONS" WAS NOT A LINK
+   "Solutions" was a bare <button> with no href, while Home, About,
+   Projects, Impact and How It Works were all real <Link>s. It
+   therefore rendered as plain, non-linked text in the main nav on
+   EVERY page, and the Solutions page was unreachable from the menu.
+   The dropdown existed and worked, but opening it was the button's
+   only action — so on a touch screen at desktop width, tapping
+   "Solutions" just opened a panel with no way to reach the page
+   itself. Visitors had to rely on the homepage buttons, in-content
+   anchors or the footer.
+
+   FIX: the label is now a REAL LINK to /solutions
+   Both the desktop and the mobile "Solutions" item are now
+   <Link href="/solutions">, matching the other five items. Clicking or
+   tapping it navigates to the page, and it is a genuine link for
+   assistive tech, middle-click, "open in new tab" and the status-bar
+   URL preview. The dropdown is kept as a progressive enhancement on
+   top of the link, never as a replacement for it:
+     - desktop: the panel opens on hover AND on keyboard focus, so a
+       keyboard user tabs onto "Solutions", sees the panel, and tabs
+       into it. Escape closes it and returns focus to the trigger.
+     - mobile: the sub-list keeps its own small chevron <button> with
+       aria-expanded/aria-controls, sitting in the same row as the
+       link, so the row offers "go to the page" and "expand the list"
+       as two separate, separately-labelled controls.
+
+   KEYBOARD / SCREEN READER
+   The panel no longer uses role="menu"/role="menuitem". Those roles
+   impose an application-menu keyboard contract (arrow keys, Home/End)
+   that was never implemented, and they are the wrong pattern for a set
+   of page links. It is now a plain disclosure: a list of ordinary
+   links inside a labelled nav landmark, operable with Tab / Enter /
+   Escape. Each item was already a real /solutions#[anchor] link and
+   the anchor IDs still match the section IDs on the Solutions page.
+
+   ALSO FIXED: hover-close race
+   onMouseLeave was bound to the <nav>, but the dropdown panel is a
+   SIBLING of the <nav>, not a child. Moving the pointer off the
+   button therefore started the close timer before the pointer reached
+   the panel. The handlers now sit on the wrapper that contains both,
+   so nav + panel are treated as one region.
+
+   UNCHANGED: all six nav items, the "Partner With Us" CTA, the logo,
+   the mobile full-screen menu, scroll-hide behaviour, focus rings and
+   the existing Escape handling for the mobile menu.
+   ─────────────────────────────────────────────────────────────── */
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -87,6 +137,8 @@ export default function Navbar() {
   const lastY = useRef(0);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
+  const solutionsTriggerRef = useRef<HTMLAnchorElement>(null);
+  const firstSolutionsItemRef = useRef<HTMLAnchorElement>(null);
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const isSolutionsActive = pathname.startsWith("/solutions");
@@ -136,11 +188,26 @@ export default function Navbar() {
         toggleRef.current?.focus();
       } else if (solutionsOpen) {
         setSolutionsOpen(false);
+        /* Return focus to the trigger, so a keyboard user is not left
+           with focus on a link inside a panel that has just closed. */
+        solutionsTriggerRef.current?.focus();
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [menuOpen, solutionsOpen, closeMenu]);
+
+  /* Close the panel when focus leaves the nav + panel region entirely
+     (Tab past the last panel link, or a click elsewhere). Without this
+     a keyboard-opened panel stayed open with focus elsewhere. */
+  const handleSolutionsBlur = useCallback(
+    (e: React.FocusEvent<HTMLDivElement>) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && e.currentTarget.contains(next)) return;
+      setSolutionsOpen(false);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -195,10 +262,19 @@ export default function Navbar() {
         transition={{ duration: prefersReducedMotion ? 0 : 0.35, ease: EASE }}
       >
         <div className="mx-auto max-w-6xl pt-3 sm:pt-4">
-          <div className="relative flex justify-center">
+          {/* Hover handlers sit HERE, on the wrapper enclosing both the
+              <nav> and the dropdown panel. They used to sit on the
+              <nav>, which is a sibling of the panel — so the pointer
+              leaving the button to travel down to the panel counted as
+              leaving the nav and started the close timer. */}
+          <div
+            className="relative flex justify-center"
+            onMouseEnter={cancelDropdownClose}
+            onMouseLeave={closeDropdown}
+            onBlur={handleSolutionsBlur}
+          >
             <nav
               aria-label="Main navigation"
-              onMouseLeave={closeDropdown}
               className={[
                 "pointer-events-auto flex items-center gap-1.5 rounded-full border px-3 py-2",
                 "transition-[background-color,border-color,box-shadow] duration-300 sm:gap-2 sm:px-5 sm:py-2",
@@ -238,12 +314,33 @@ export default function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                <button
-                  type="button"
-                  aria-haspopup="menu"
+                {/* "Solutions" is a REAL LINK to the page. It is not a
+                    button: it was previously a <button> with no href,
+                    which is why it showed as non-linked text and could
+                    not be reached on touch. The panel is a progressive
+                    enhancement opened on hover or keyboard focus. */}
+                <Link
+                  ref={solutionsTriggerRef}
+                  href="/solutions"
+                  aria-haspopup="true"
                   aria-expanded={solutionsOpen}
+                  aria-controls="go-green-solutions-menu"
                   onMouseEnter={() => setSolutionsOpen(true)}
-                  onClick={() => setSolutionsOpen(true)}
+                  onFocus={() => setSolutionsOpen(true)}
+                  onClick={closeMenu}
+                  onKeyDown={(e) => {
+                    /* The panel is rendered after the "Partner With Us"
+                       CTA in the DOM, so Tab alone would step past it.
+                       ArrowDown enters the panel explicitly; Escape
+                       (handled globally) closes and returns here. */
+                    if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      setSolutionsOpen(true);
+                      window.requestAnimationFrame(() =>
+                        firstSolutionsItemRef.current?.focus(),
+                      );
+                    }
+                  }}
                   className={[
                     linkClasses(isSolutionsActive),
                     "flex items-center gap-1",
@@ -251,12 +348,13 @@ export default function Navbar() {
                 >
                   Solutions
                   <ChevronDown
+                    aria-hidden="true"
                     className={[
                       "h-4 w-4 transition-transform duration-200",
                       solutionsOpen ? "rotate-180" : "",
                     ].join(" ")}
                   />
-                </button>
+                </Link>
               </div>
 
               <Link
@@ -287,22 +385,28 @@ export default function Navbar() {
               {solutionsOpen && (
                 <motion.div
                   key="solutions-dropdown"
+                  id="go-green-solutions-menu"
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
                   transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: EASE }}
-                  onMouseEnter={cancelDropdownClose}
-                  onMouseLeave={closeDropdown}
                   className="pointer-events-auto absolute left-1/2 top-full z-50 hidden w-[420px] -translate-x-1/2 pt-4 lg:block"
                 >
                   <div className="w-full max-w-[calc(100vw-2.5rem)] rounded-3xl border border-gray-100 bg-white/95 p-3 shadow-[0_20px_60px_-15px_rgb(0,0,0,0.25)] backdrop-blur-xl">
-                    <ul role="menu" aria-label="Solutions">
+                    {/* A plain list of page links, not role="menu". The
+                        menu role required arrow-key handling that was
+                        never implemented, and was the wrong pattern for
+                        navigation links. */}
+                    <ul aria-label="Individual solutions">
                       {solutionItems.map((item) => (
-                        <li key={item.label} role="none">
+                        <li key={item.label}>
                           <Link
+                            ref={item === solutionItems[0] ? firstSolutionsItemRef : undefined}
                             href={item.href}
-                            role="menuitem"
-                            onClick={() => setSolutionsOpen(false)}
+                            onClick={() => {
+                              setSolutionsOpen(false);
+                              closeMenu();
+                            }}
                             className="flex items-start gap-4 rounded-2xl p-3 transition-colors duration-200 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                           >
                             <span className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -323,7 +427,10 @@ export default function Navbar() {
                     <div className="mt-2 border-t border-gray-100 pt-2">
                       <Link
                         href="/solutions"
-                        onClick={() => setSolutionsOpen(false)}
+                        onClick={() => {
+                          setSolutionsOpen(false);
+                          closeMenu();
+                        }}
                         className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                       >
                         Explore all solutions
@@ -386,62 +493,82 @@ export default function Navbar() {
                   })}
                 </ul>
 
-                <div className="mt-6">
+                {/* Mobile: a real <Link> to the page, plus a separate
+                    chevron <button> that expands the individual
+                    sub-items. Two controls, two clearly labelled
+                    actions, in one row. The sub-list previously hung
+                    off a <button>, so on mobile there was no route to
+                    /solutions from the menu at all. */}
+                <div className="mt-6 flex items-stretch gap-2">
+                  <Link
+                    href="/solutions"
+                    onClick={closeMenu}
+                    className={[
+                      mobileLinkClasses(isSolutionsActive),
+                      "flex-1 justify-center",
+                    ].join(" ")}
+                  >
+                    Solutions
+                  </Link>
                   <button
                     type="button"
                     onClick={() => setMobileSolutionsOpen((open) => !open)}
                     aria-expanded={mobileSolutionsOpen}
                     aria-controls="go-green-mobile-solutions"
-                    className={mobileLinkClasses(isSolutionsActive)}
+                    aria-label={
+                      mobileSolutionsOpen
+                        ? "Hide individual solutions"
+                        : "Show individual solutions"
+                    }
+                    className="flex w-14 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/5 text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                   >
-                    Solutions
                     <ChevronDown
                       className={[
-                        "ml-auto h-5 w-5 transition-transform duration-200",
+                        "h-5 w-5 transition-transform duration-200",
                         mobileSolutionsOpen ? "rotate-180" : "",
                       ].join(" ")}
                       aria-hidden="true"
                     />
                   </button>
-
-                  <AnimatePresence initial={false}>
-                    {mobileSolutionsOpen && (
-                      <motion.div
-                        id="go-green-mobile-solutions"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{
-                          duration: prefersReducedMotion ? 0 : 0.25,
-                          ease: EASE,
-                        }}
-                        className="overflow-hidden"
-                      >
-                        <ul className="ml-4 mt-2 space-y-1 border-l-2 border-primary/20 pl-5 pb-1">
-                          {solutionItems.map((item) => {
-                            const hrefBase = item.href.split("#")[0];
-                            const itemActive = pathname === hrefBase;
-                            return (
-                              <li key={item.label}>
-                                <Link
-                                  href={item.href}
-                                  onClick={closeMenu}
-                                  className={mobileSubMenuClasses(itemActive)}
-                                >
-                                  <span
-                                    aria-hidden="true"
-                                    className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/60"
-                                  />
-                                  {item.label}
-                                </Link>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
+
+                <AnimatePresence initial={false}>
+                  {mobileSolutionsOpen && (
+                    <motion.div
+                      id="go-green-mobile-solutions"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        duration: prefersReducedMotion ? 0 : 0.25,
+                        ease: EASE,
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <ul className="ml-4 mt-2 space-y-1 border-l-2 border-primary/20 pl-5 pb-1">
+                        {solutionItems.map((item) => {
+                          const hrefBase = item.href.split("#")[0];
+                          const itemActive = pathname === hrefBase;
+                          return (
+                            <li key={item.label}>
+                              <Link
+                                href={item.href}
+                                onClick={closeMenu}
+                                className={mobileSubMenuClasses(itemActive)}
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/60"
+                                />
+                                {item.label}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <Link
                   href="/contact"

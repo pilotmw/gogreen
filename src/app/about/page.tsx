@@ -76,48 +76,19 @@ import {
   Handshake,
   TrendingUp,
   ArrowRight,
-  Zap,
-  Share2,
-  RefreshCw,
-  Coins,
   Flag,
   ImageOff,
 } from "lucide-react";
 import LeadershipSection from "@/components/LeadershipSection";
+import { circularModelSteps, circularModelNamesSentence, stepDescription } from "@/data/circularModel";
 
-const stages = [
-  {
-    icon: Recycle,
-    title: "Recover",
-    description:
-      "Waste and underused resources are collected and recovered rather than discarded.",
-  },
-  {
-    icon: Zap,
-    title: "Convert",
-    description:
-      "Recovered materials and resources are transformed into useful materials, products, energy or other value.",
-  },
-  {
-    icon: Share2,
-    title: "Distribute",
-    description:
-      "Value moves back into communities, households, businesses and productive systems.",
-  },
-  {
-    /* NEW — step 04. Added to match the homepage's 5-step model. */
-    icon: Coins,
-    title: "Create Value",
-    description:
-      "Environmental, social and economic value is generated across the chain, and captured so it can be measured and reinvested.",
-  },
-  {
-    icon: RefreshCw,
-    title: "Reinvest",
-    description:
-      "Economic and environmental value supports continued recovery, capability and circular growth.",
-  },
-];
+/* The five steps now come from the shared model source. The card
+   presentation below is deliberately this page's own (larger cards,
+   ringed icons, large numerals) — the homepage and /how-it-works share
+   one compact flow component instead — but the names, order, count,
+   icons and copy are all read from src/data/circularModel.ts, so this
+   page can no longer drift out of step with the rest of the site. */
+const stages = circularModelSteps;
 
 /* ── FOUNDING STORY ───────────────────────────────────────────
    ⚠ PLACEHOLDER DATES AND MILESTONES. No founding history has been
@@ -443,14 +414,14 @@ export default function AboutPage() {
               One system. Five moves.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
-              Recover, convert, distribute, create value, reinvest — the loop
-              that keeps value in productive use and grows the system over time.
+              {circularModelNamesSentence} — the loop that keeps value in
+              productive use and grows the system over time.
             </p>
           </div>
 
           <div className="mt-12 flex flex-col items-center gap-6 md:mt-16 xl:flex-row xl:items-stretch xl:justify-center">
-            {stages.map((stage, i) => (
-              <Fragment key={stage.title}>
+            {stages.map((step, i) => (
+              <Fragment key={step.id}>
                 <article className="relative flex w-full max-w-sm flex-col overflow-hidden rounded-3xl border border-primary/10 bg-white/85 p-7 shadow-[0_20px_45px_-35px_rgba(20,83,45,0.4)] backdrop-blur-sm xl:max-w-none xl:flex-1">
                   <div
                     aria-hidden="true"
@@ -458,17 +429,17 @@ export default function AboutPage() {
                   />
                   <div className="relative flex items-center justify-between">
                     <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-emerald-100 text-primary ring-1 ring-primary/20">
-                      <stage.icon className="h-6 w-6" strokeWidth={1.6} />
+                      <step.icon className="h-6 w-6" strokeWidth={1.6} />
                     </span>
                     <span className="text-2xl font-black tabular-nums tracking-tight text-primary/20">
-                      {String(i + 1).padStart(2, "0")}
+                      {step.number}
                     </span>
                   </div>
                   <h3 className="relative mt-5 text-xl font-bold tracking-tight text-gray-900">
-                    {stage.title}
+                    {step.name}
                   </h3>
                   <p className="relative mt-2 text-[0.95rem] leading-[1.7] text-gray-600">
-                    {stage.description}
+                    {stepDescription(step, "about")}
                   </p>
                 </article>
                 {i < stages.length - 1 && (

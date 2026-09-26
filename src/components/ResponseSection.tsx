@@ -3,18 +3,7 @@
 /* ───────────────────────────────────────────────────────────────
    SIMPLIFICATION SUMMARY — for client review
 
-   REMOVED
-   - The "What we do / Turning Resources Into Opportunity." editorial
-     statement — a third statement of the same idea as the h2 and the
-     intro line below
-   - The two-sentence intro (previously a merge of two blocks) → one
-     intro line
-   - The closing statement block ("A greener economy is not one
-     solution. It is a connected system." + "GoGreen Resources builds
-     those connections.") — it only restated the section opening
-   - Step descriptions were sentences; each is now a 3–5 word phrase
-
-   5-STEP FLOW REBUILD
+   5-STEP FLOW REBUILT
    - The circular ring diagram (numbered circle nodes, dashed track,
      progress fill, node click-to-select, 4.2s autoplay, scroll-linked
      progress, centre "active stage" readout and progress dots) is
@@ -23,67 +12,32 @@
    - All of the ring's geometry, SVG gradients, motion values and state
      were deleted with it — no dead code or leftover CSS remains.
 
+   THE FLOW IS NOW A SHARED COMPONENT
+   The step diagram itself now lives in <CircularModelFlow />, which
+   this section renders with `level="phrase"`. /how-it-works renders
+   the same component with the fuller "detail" copy. The step data
+   (names, order, count, icons, all three copy tiers) moved to
+   src/data/circularModel.ts, which the About page also reads. That
+   fixes a site-wide inconsistency: /how-it-works previously described
+   a 4-step model with no "Create Value". The cards rendered below are
+   unchanged from the approved design.
+
    KEPT
    - The same five stages, in the same order, as a semantic <ol>
    - The photograph band and the single "Explore Our Solutions" CTA
+   - "Returns to Recover" — a slogan, not a step list
    ─────────────────────────────────────────────────────────────── */
 
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import {
-  ArrowRight,
-  Coins,
-  Cog,
-  Recycle,
-  RotateCcw,
-  Sprout,
-  Truck,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-interface Stage {
-  icon: LucideIcon;
-  number: string;
-  name: string;
-  phrase: string;
-}
+import CircularModelFlow from "@/components/CircularModelFlow";
 
-/* DRAFT COPY — each phrase is a trim of the previous one-sentence step
-   description. Confirm final wording with client. */
-const stages: Stage[] = [
-  {
-    icon: Recycle,
-    number: "01",
-    name: "RECOVER",
-    phrase: "Waste & underused resources",
-  },
-  {
-    icon: Cog,
-    number: "02",
-    name: "CONVERT",
-    phrase: "Into energy & materials",
-  },
-  {
-    icon: Truck,
-    number: "03",
-    name: "DISTRIBUTE",
-    phrase: "To people & markets",
-  },
-  {
-    icon: Coins,
-    number: "04",
-    name: "CREATE VALUE",
-    phrase: "Environmental & economic",
-  },
-  {
-    icon: Sprout,
-    number: "05",
-    name: "REINVEST",
-    phrase: "Back into the system",
-  },
-];
+/* DRAFT COPY — confirm final wording with client. */
+const intro = "We turn waste and underused resources into energy, materials, and opportunity.";
 
 export default function ResponseSection() {
   const prefersReducedMotion = useReducedMotion();
@@ -181,9 +135,7 @@ export default function ResponseSection() {
             transition={{ duration: d ?? 0.7, delay: d ?? 0.16, ease: "easeOut" }}
             className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-gray-600 leading-relaxed"
           >
-            {/* DRAFT COPY — confirm final wording with client */}
-            We turn waste and underused resources into energy, materials, and
-            opportunity.
+            {intro}
           </motion.p>
         </div>
 
@@ -216,62 +168,12 @@ export default function ResponseSection() {
         </motion.div>
 
         {/* ── 3. THE FIVE-STEP FLOW ──────────────────────
-            Row of 5 equal-width icon cards joined by 4 arrow
-            connectors from 820px up; a single column with the arrows
-            rotated to point downwards below that. Each <li> holds its
-            card plus the arrow that follows it, so the list stays valid
-            and the last card simply has no arrow. */}
-        <ol className="mt-12 flex flex-col items-stretch md:mt-16 min-[820px]:flex-row min-[820px]:items-stretch">
-          {stages.map((stage, i) => (
-            <motion.li
-              key={stage.name}
-              initial={{ opacity: 0, y: 18 }}
-              animate={sectionInView ? { opacity: 1, y: 0 } : undefined}
-              transition={{
-                duration: d ?? 0.55,
-                delay: d ?? i * 0.08,
-                ease: "easeOut",
-              }}
-              className="flex min-w-0 flex-col items-stretch min-[820px]:flex-row min-[820px]:flex-1 min-[820px]:basis-0"
-            >
-              <article className="flex w-full min-w-0 flex-col rounded-xl border border-primary/10 bg-white p-4 shadow-[0_18px_45px_-38px_rgba(20,83,45,0.45)] min-[820px]:p-5">
-                <span
-                  aria-hidden="true"
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
-                >
-                  <stage.icon className="h-5 w-5" strokeWidth={1.75} />
-                </span>
-
-                <h3 className="mt-3.5 text-[0.78rem] font-bold uppercase leading-snug tracking-[0.14em] text-primary-dark">
-                  {stage.number} · {stage.name}
-                </h3>
-                <p className="mt-1.5 text-[0.9rem] leading-snug text-gray-600">
-                  {stage.phrase}
-                </p>
-              </article>
-
-              {i < stages.length - 1 && (
-                <span
-                  aria-hidden="true"
-                  className="my-2 flex h-7 w-7 shrink-0 rotate-90 items-center justify-center self-center text-primary min-[820px]:my-0 min-[820px]:rotate-0"
-                >
-                  <ArrowRight className="h-5 w-5" strokeWidth={2} />
-                </span>
-              )}
-            </motion.li>
-          ))}
-        </ol>
-
-        {/* the flow is circular: step 05 feeds back into step 01 */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={sectionInView ? { opacity: 1 } : undefined}
-          transition={{ duration: d ?? 0.5, delay: d ?? 0.5, ease: "easeOut" }}
-          className="mt-7 flex items-center justify-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary/70"
-        >
-          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-          Returns to Recover
-        </motion.p>
+            Shared component, rendering the "phrase" copy tier. Row of
+            5 equal-width icon cards joined by 4 arrow connectors from
+            820px up; one column below, arrows rotated to point down. */}
+        <div className="mt-12 md:mt-16">
+          <CircularModelFlow level="phrase" showLoopNote delay={0.16} />
+        </div>
 
         {/* ── 4. SINGLE CTA ─────────────────────────────
             The closing statement ("A greener economy is not one solution. It is
