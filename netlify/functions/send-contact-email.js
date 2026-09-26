@@ -7,6 +7,34 @@ const nodemailer = require("nodemailer");
 const SITE_NAME = "GoGreen Resources Limited";
 const DEFAULT_SITE_URL = "https://gogreenmw.com";
 
+/* WHERE ENQUIRIES ARE DELIVERED.
+ *
+ * This is the ONLY address in this file that is safe to change to a
+ * different mailbox, and it is the one the client asked to move to
+ * info@gogreenmw.com.
+ *
+ * DO NOT "FIX" THIS BY CHANGING SMTP_USER OR MAIL_FROM. Those are
+ * different things and both are currently admin@gogreenmw.com:
+ *   SMTP_USER     - the account the SMTP server authenticates as.
+ *   MAIL_FROM     - the From: header visitors see.
+ *   CONTACT_EMAIL - where the enquiry is delivered. This one only.
+ * The public site advertises info@ for general enquiries and
+ * edgar@ for the CEO, but the mail relay still signs in as admin@.
+ * That is intentional and must stay that way until the client's
+ * provider confirms info@ is an authorised sender on that account:
+ * changing MAIL_FROM to an address the relay is not authenticated to
+ * makes every send fail or land in spam, and changing SMTP_USER breaks
+ * authentication outright.
+ *
+ * CONTACT_EMAIL in the Netlify dashboard still overrides this default.
+ * If the dashboard variable is set to admin@gogreenmw.com, enquiries
+ * will keep going there and this default is bypassed - either update the
+ * dashboard value to info@gogreenmw.com or delete the variable so this
+ * repo value takes effect. Every request logs the resolved recipient
+ * (see the log() call in handler), so the live destination is always
+ * visible in the Netlify function log without sending a test email. */
+const DEFAULT_CONTACT_EMAIL = "info@gogreenmw.com";
+
 const MAX_BODY_BYTES = 16384;
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 5 submissions per IP per hour
@@ -57,7 +85,7 @@ function getConfig() {
   const user = env[S + "USER"] || "";
   const pass = env[S + "PASSWORD"] || "";
   const smtpFrom = env["MAIL_" + "FROM"] || env["SMTP_" + "FROM"] || user;
-  const toAdmin = env["CONTACT_" + "EMAIL"] || "";
+  const toAdmin = env["CONTACT_" + "EMAIL"] || DEFAULT_CONTACT_EMAIL;
   const siteUrl = (env["SITE_" + "URL"] || DEFAULT_SITE_URL).replace(/\/+$/, "");
   const from = smtpFrom.includes("@") ? `"${SITE_NAME}" <${smtpFrom}>` : `"${SITE_NAME}" <${user}>`;
   return { host, port, secure, user, pass, toAdmin, siteUrl, from };
@@ -382,6 +410,27 @@ exports.handler = async function (event) {
     log("error", "Email not configured — required SMTP environment variables are missing.");
     return jsonResponse(503, false, "Email service is not configured.");
   }
+
+  /* A malformed recipient would otherwise surface as an opaque SMTP
+     rejection, or worse, as a silently undelivered enquiry. Catch it
+     here and name the offending value so the misconfiguration is
+     obvious in the function log. */
+  if (!EMAIL_RE.test(config.toAdmin)) {
+    log(
+      "error",
+      `Enquiry recipient is not a valid address: "${config.toAdmin}". ` +
+        `Fix CONTACT_EMAIL in the Netlify dashboard, or correct DEFAULT_CONTACT_EMAIL in this file.`,
+    );
+    return jsonResponse(503, false, "Email service is not configured.");
+  }
+
+  // Logged on every request so the live delivery destination is always
+  // visible without having to send a test enquiry. It also records
+  // whether the dashboard override is in play or the repo default is.
+  const recipientSource = process.env["CONTACT_" + "EMAIL"]
+    ? "CONTACT_EMAIL (dashboard override)"
+    : "DEFAULT_CONTACT_EMAIL (repo default)";
+  log("info", `Enquiry from ${ip} will be delivered to ${config.toAdmin} [via ${recipientSource}]`);
 
   const transporter = transportFor(config);
 
