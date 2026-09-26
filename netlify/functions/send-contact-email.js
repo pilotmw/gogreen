@@ -23,6 +23,10 @@ const LIMITS = {
 
 const EMAIL_RE = /^[^\s@]{1,64}@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
+// Decoy field names that must arrive empty. Keep in sync with
+// HONEYPOT_FIELD in src/app/contact/page.tsx.
+const HONEYPOT_FIELDS = ["website_url_confirm", "website"];
+
 // In-memory rate limiting. Netlify may run several warm instances, so this is
 // best-effort per instance — a documented lightweight anti-abuse mechanism
 // that requires no paid services.
@@ -347,10 +351,19 @@ exports.handler = async function (event) {
     return jsonResponse(400, false, "Invalid request payload.");
   }
 
-  // Honeypot: bots that fill the hidden "website" field are silently accepted.
-  if (typeof payload.website === "string" && payload.website.trim() !== "") {
-    log("info", `Honeypot triggered by ${ip} — request dropped.`);
-    return jsonResponse(200, true, "Message received.");
+  // Honeypot: bots that fill a hidden text input are silently accepted.
+  // HONEYPOT_FIELDS lists every decoy name this form has used. "website"
+  // is kept for backwards compatibility with submissions still in flight
+  // from a cached page, but it is no longer sent by the form: browsers
+  // and password managers DO autofill a field named "website", which used
+  // to make a real visitor's message get silently discarded while they
+  // were shown a success message. The live field is `website_url_confirm`
+  // and is `display:none`, which browsers skip for autofill entirely.
+  for (const field of HONEYPOT_FIELDS) {
+    if (typeof payload[field] === "string" && payload[field].trim() !== "") {
+      log("info", `Honeypot "${field}" triggered by ${ip} — request dropped.`);
+      return jsonResponse(200, true, "Message received.");
+    }
   }
 
   const { errors, data } = validate(payload);

@@ -1,3 +1,22 @@
+/* ───────────────────────────────────────────────────────────────
+   FOOTER — WHAT CHANGED (client review)
+
+   CONTACT EMAILS NOW LABELLED BY PURPOSE. The footer listed two
+   addresses with no labels, so "edgar@gogreenmw.com" read as a stray
+   second admin mailbox. The client confirmed it belongs to the Chief
+   Executive Officer, so both now carry a purpose label:
+     General enquiries      -> admin@gogreenmw.com
+     Chief Executive Officer -> edgar@gogreenmw.com
+   This matches the labelling on the Contact page. The addresses
+   themselves are unchanged; only the labels were added.
+
+   NOTE: the CEO's display name was corrected to
+   "Thokozani Edgar Kamangira" on the About page and homepage. His
+   photo asset is still the old filename
+   "Thokozani Kamangira_Chief Executive Officer.png" — the file was
+   not renamed, as that is internal only and not shown to visitors.
+   ─────────────────────────────────────────────────────────────── */
+
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
@@ -53,7 +72,9 @@ export default function Footer() {
               <li className="flex items-center gap-2 text-sm text-gray-300">
                 <Mail className="h-4 w-4 text-primary-light flex-shrink-0" />
                 <div>
+                  <span className="block text-xs uppercase tracking-[0.14em] text-gray-400">General enquiries</span>
                   <a href="mailto:admin@gogreenmw.com" className="hover:text-primary-light transition-colors block">admin@gogreenmw.com</a>
+                  <span className="mt-2 block text-xs uppercase tracking-[0.14em] text-gray-400">Chief Executive Officer</span>
                   <a href="mailto:edgar@gogreenmw.com" className="hover:text-primary-light transition-colors block">edgar@gogreenmw.com</a>
                 </div>
               </li>

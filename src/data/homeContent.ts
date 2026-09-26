@@ -79,7 +79,7 @@ export interface TeamPreviewMember {
 
 export const teamPreview: TeamPreviewMember[] = [
   {
-    name: "Thokozani Kamangira",
+    name: "Thokozani Edgar Kamangira",
     title: "Chief Executive Officer",
     // PLACEHOLDER — replace with a client-approved one-line bio.
     bio: "Leads the company's circular economy strategy and partnerships.",

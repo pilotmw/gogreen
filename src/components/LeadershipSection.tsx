@@ -39,7 +39,7 @@ interface Leader {
 
 const leaders: Leader[] = [
   {
-    name: "Thokozani Kamangira",
+    name: "Thokozani Edgar Kamangira",
     occupation: "Chief Executive Officer",
     image: thokozaniKamangira,
     // PLACEHOLDER BIO — confirm with client.

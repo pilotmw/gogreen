@@ -1,5 +1,65 @@
 "use client";
 
+/* ───────────────────────────────────────────────────────────────
+   CONTACT PAGE — WHAT WAS FIXED (client review)
+
+   1. THE "WEBSITE" FIELD — it IS an anti-spam honeypot, now
+      bulletproof. It was never meant to be a real input, but the
+      hiding was fragile and the field name was dangerous:
+        - the wrapper relied on `position:absolute; left:-9999px`
+          with no positioned ancestor, so its visibility depended on
+          no ancestor ever gaining a transform/filter/contain;
+        - it was named `website`, a name browsers AND password
+          managers do autofill. A real visitor whose browser filled
+          that field hit `if (honeypot) { showSuccess(); return; }` —
+          they were shown "Message Sent Successfully" and the email
+          was NEVER sent. Same silent discard server-side. That is
+          silent data loss with a false confirmation, and it is the
+          most important thing fixed on this page.
+      Now: `display:none` (which browsers skip entirely, so autofill
+      is no longer possible), `aria-hidden`, `tabIndex={-1}`, and a
+      decoy name `website_url_confirm` that no browser will ever fill
+      but a naive bot will. The server accepts a set of honeypot names
+      so the old and new keys are both caught.
+
+   2. EMAILS LABELLED BY PURPOSE, AND THE CEO IDENTIFIED.
+      `admin@` is "General Enquiries". `edgar@gogreenmw.com` was an
+      unexplained address: the local part "edgar" matched nobody on the
+      site, so it had been labelled only "Alternate Contact" and flagged
+      for the client. CONFIRMED BY THE CLIENT: it is the Chief Executive
+      Officer, whose full name has been corrected to
+      "Thokozani Edgar Kamangira" throughout the site (About page team
+      list, homepage team preview, and here). The address itself is
+      unchanged — only the display name and this label were wrong.
+
+   3. SUBJECT DROPDOWN EXPANDED. Added "General Enquiry" and
+      "Media / Press" alongside the existing five. The function does
+      not enum-check `subject`, so no backend change was needed.
+
+   4. SUCCESS STATE STRENGTHENED. An auto-reply was ALREADY wired up
+      server-side (ackMailHtml/ackMailText in
+      netlify/functions/send-contact-email.js) and fires after the
+      admin notification is delivered, with loop prevention for the
+      org's own addresses. No new service or env var is needed. The
+      on-screen banner now states the 24-hour response commitment and
+      carries role="status" + aria-live so it is announced to screen
+      readers instead of appearing silently.
+
+   ⚠ NOT CHANGED — NEEDS CLIENT INPUT
+   - Address: still "Specific address available upon request". No
+      street or area detail has been supplied, so none was invented.
+      Confirm with the client that withholding it is deliberate.
+   - Map: still a city-wide view of Lilongwe with no pin, because no
+      office coordinates have been provided. Flagged as a placeholder
+      — supply a latitude/longitude or Google Maps place URL and the
+      embed can be repointed in one line (see MAP below).
+   - Social links: NONE ADDED, deliberately. No LinkedIn, Facebook, X
+      or Instagram profile for the company exists anywhere in this
+      codebase, and the brief forbids inventing them. LeadershipSection
+      already accepts an optional `linkedin` URL per person, so those
+      can be wired up as soon as the client supplies real profile URLs.
+   ─────────────────────────────────────────────────────────────── */
+
 import { useState, useRef } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
@@ -7,6 +67,12 @@ import { motion } from "framer-motion";
 
 const CONTACT_API = "/.netlify/functions/send-contact-email";
 const SUBMIT_COOLDOWN_MS = 20000;
+
+/* Honeypot field name. Deliberately NOT "website": that is a name
+   browsers and password managers autofill, which made a real visitor's
+   message get silently discarded while they were told it had sent.
+   Paired with `display:none`, which browsers skip for autofill. */
+const HONEYPOT_FIELD = "website_url_confirm";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -33,6 +99,10 @@ export default function ContactPage() {
     e.preventDefault();
 
     if (honeypot) {
+      // Bot. Show the same success state and send nothing, so the bot
+      // gets no signal that it was caught. Unreachable for real users:
+      // the field is `display:none`, so it can never be filled by hand
+      // or by a browser's autofill.
       showSuccess();
       return;
     }
@@ -50,7 +120,7 @@ export default function ContactPage() {
       const res = await fetch(CONTACT_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, website: honeypot }),
+        body: JSON.stringify({ ...formData, [HONEYPOT_FIELD]: honeypot }),
       });
 
       if (res.ok) {
@@ -99,14 +169,19 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
               <h2 className="text-2xl font-bold text-white mb-6">Send Us a Message</h2>
-              {isSubmitted && (
+                  {isSubmitted && (
                 <motion.div
+                  role="status"
+                  aria-live="polite"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-green-900/50 text-green-100 p-4 rounded-md mb-6"
                 >
-                  Message Sent Successfully — Thank you for contacting us.
-                  We&apos;ll get back to you soon.
+                  <p className="font-semibold">Message sent — thank you for contacting us.</p>
+                  <p className="mt-1">
+                    We&apos;ve emailed you a copy of your message and we&apos;ll
+                    respond within 24 hours.
+                  </p>
                 </motion.div>
               )}
               {submitError && (
@@ -119,22 +194,23 @@ export default function ContactPage() {
                 </motion.div>
               )}
                   <form onSubmit={handleSubmit} className="space-y-6">
-<div
-                  style={{
-                    position: "absolute",
-                    left: "-9999px",
-                    width: "1px",
-                    height: "1px",
-                    overflow: "hidden",
-                    opacity: 0,
-                  }}
-                  aria-hidden="true"
-                >
-                  <label htmlFor="website">Website</label>
+                {/* ── ANTI-SPAM HONEYPOT ──────────────────────
+                    Not a real field — do not relabel, reposition or
+                    remove it. `display:none` keeps it away from real
+                    visitors AND stops browsers autofilling it (the
+                    previous off-screen `website` field could be filled
+                    by a password manager, which silently threw the
+                    visitor's message away). Bots fill every text input
+                    they find, so this still catches them; the function
+                    drops those requests silently. */}
+                <div style={{ display: "none" }} aria-hidden="true">
+                  <label htmlFor={HONEYPOT_FIELD}>
+                    Leave this field empty
+                  </label>
                   <input
                     type="text"
-                    id="website"
-                    name="website"
+                    id={HONEYPOT_FIELD}
+                    name={HONEYPOT_FIELD}
                     value={honeypot}
                     onChange={(e) => setHoneypot(e.target.value)}
                     tabIndex={-1}
@@ -203,10 +279,12 @@ export default function ContactPage() {
                     className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-2 focus:ring-primary focus:border-transparent"
                   >
                     <option value="">Select a subject</option>
+                    <option value="General">General Enquiry</option>
                     <option value="Partnership">Partnership Opportunity</option>
                     <option value="Services">Service Inquiry</option>
                     <option value="Investment">Investment Opportunity</option>
                     <option value="Community">Community Participation</option>
+                    <option value="Media">Media / Press</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>
@@ -246,10 +324,13 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white mb-1">Location</h3>
-                    <p className="text-white/90">
-                      Lilongwe, Malawi
-                      <br />
-                      <span className="text-sm text-white/70">(Specific address available upon request)</span>
+                    <p className="text-white/90">Lilongwe, Malawi</p>
+                    {/* ⚠ PLACEHOLDER — no street or area detail has been
+                        supplied by the client, so none was invented.
+                        Confirm that withholding the address is a
+                        deliberate choice and not an oversight. */}
+                    <p className="text-sm text-white/70">
+                      Office address available on request
                     </p>
                   </div>
                 </div>
@@ -259,9 +340,44 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white mb-1">Email</h3>
-                    <a href="mailto:admin@gogreenmw.com" className="text-white/90 hover:text-primary-light transition-colors block">admin@gogreenmw.com</a>
-                    <a href="mailto:edgar@gogreenmw.com" className="text-white/90 hover:text-primary-light transition-colors block">edgar@gogreenmw.com</a>
-                    <p className="text-sm text-white/70">We respond within 24 hours</p>
+                    <dl className="space-y-2">
+                      <div>
+                        <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
+                          General enquiries
+                        </dt>
+                        <dd>
+                          <a
+                            href="mailto:admin@gogreenmw.com"
+                            className="text-white/90 hover:text-primary-light transition-colors"
+                          >
+                            admin@gogreenmw.com
+                          </a>
+                        </dd>
+                      </div>
+                      {/* The client confirmed this address belongs to the
+                          Chief Executive Officer, so the name is shown
+                          next to it rather than the earlier neutral
+                          "Alternate contact" label. */}
+                      <div>
+                        <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
+                          Chief Executive Officer
+                        </dt>
+                        <dd>
+                          <a
+                            href="mailto:edgar@gogreenmw.com"
+                            className="text-white/90 hover:text-primary-light transition-colors"
+                          >
+                            edgar@gogreenmw.com
+                          </a>
+                          <span className="block text-sm text-white/70">
+                            Thokozani Edgar Kamangira
+                          </span>
+                        </dd>
+                      </div>
+                    </dl>
+                    <p className="mt-3 text-sm text-white/70">
+                      We respond within 24 hours
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -320,6 +436,13 @@ export default function ContactPage() {
         </div>
       </section>
 
+      {/* ── MAP ──────────────────────────────────────────
+          ⚠ PLACEHOLDER — this is still a city-wide view of Lilongwe
+          with no marker, because no office coordinates have been
+          supplied. To repoint it, replace the `src` below with a Google
+          Maps embed for the office (or general area) and set
+          `title` to match. The caption is worded so it stays accurate
+          while the pin is city-level. */}
       <section className="py-16 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gray-900 p-4 rounded-lg shadow-md">
@@ -334,6 +457,10 @@ export default function ContactPage() {
               title="Lilongwe, Malawi Map"
               className="rounded-md"
             />
+            <p className="mt-3 px-1 text-sm text-white/70">
+              Our office is in Lilongwe, Malawi. Contact us for the exact
+              location and directions.
+            </p>
           </div>
         </div>
       </section>
