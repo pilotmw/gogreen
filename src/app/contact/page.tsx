@@ -23,14 +23,21 @@
       so the old and new keys are both caught.
 
    2. EMAILS LABELLED BY PURPOSE, AND THE CEO IDENTIFIED.
-      `admin@` is "General Enquiries". `edgar@gogreenmw.com` was an
-      unexplained address: the local part "edgar" matched nobody on the
-      site, so it had been labelled only "Alternate Contact" and flagged
-      for the client. CONFIRMED BY THE CLIENT: it is the Chief Executive
-      Officer, whose full name has been corrected to
-      "Thokozani Edgar Kamangira" throughout the site (About page team
-      list, homepage team preview, and here). The address itself is
-      unchanged — only the display name and this label were wrong.
+      `info@gogreenmw.com` is "General Enquiries" — the client's
+      preferred general mailbox, replacing the old `admin@`.
+      `edgar@gogreenmw.com` was an unexplained address: the local part
+      "edgar" matched nobody on the site, so it had been labelled only
+      "Alternate Contact" and flagged for the client. CONFIRMED BY THE
+      CLIENT: it is the Chief Executive Officer, whose full name has
+      been corrected to "Thokozani Edgar Kamangira" throughout the site
+      (About page team list, homepage team preview, and here).
+
+      ⚠ IF YOU CHANGE EITHER ADDRESS: the contact form's notification
+      recipient is NOT read from this file. It comes from the
+      CONTACT_EMAIL environment variable in the Netlify dashboard
+      (read in netlify/functions/send-contact-email.js). Update it there
+      too, or the site will advertise one address while form
+      submissions are delivered to another.
 
    3. SUBJECT DROPDOWN EXPANDED. Added "General Enquiry" and
       "Media / Press" alongside the existing five. The function does
@@ -347,10 +354,10 @@ export default function ContactPage() {
                         </dt>
                         <dd>
                           <a
-                            href="mailto:admin@gogreenmw.com"
+                            href="mailto:info@gogreenmw.com"
                             className="text-white/90 hover:text-primary-light transition-colors"
                           >
-                            admin@gogreenmw.com
+                            info@gogreenmw.com
                           </a>
                         </dd>
                       </div>

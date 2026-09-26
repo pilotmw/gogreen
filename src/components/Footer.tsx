@@ -5,10 +5,17 @@
    addresses with no labels, so "edgar@gogreenmw.com" read as a stray
    second admin mailbox. The client confirmed it belongs to the Chief
    Executive Officer, so both now carry a purpose label:
-     General enquiries      -> admin@gogreenmw.com
+     General enquiries       -> info@gogreenmw.com
      Chief Executive Officer -> edgar@gogreenmw.com
-   This matches the labelling on the Contact page. The addresses
-   themselves are unchanged; only the labels were added.
+   This matches the labelling on the Contact page.
+
+   The general address was also changed at the client's request:
+   `admin@gogreenmw.com` is replaced by `info@gogreenmw.com` here and
+   on the Contact page. ⚠ The contact form's notification recipient is
+   a separate thing — it comes from the CONTACT_EMAIL environment
+   variable in the Netlify dashboard, not from this repo. It must be
+   updated there to match, or the form will keep delivering to the old
+   address while the site advertises the new one.
 
    NOTE: the CEO's display name was corrected to
    "Thokozani Edgar Kamangira" on the About page and homepage. His
@@ -73,7 +80,7 @@ export default function Footer() {
                 <Mail className="h-4 w-4 text-primary-light flex-shrink-0" />
                 <div>
                   <span className="block text-xs uppercase tracking-[0.14em] text-gray-400">General enquiries</span>
-                  <a href="mailto:admin@gogreenmw.com" className="hover:text-primary-light transition-colors block">admin@gogreenmw.com</a>
+                  <a href="mailto:info@gogreenmw.com" className="hover:text-primary-light transition-colors block">info@gogreenmw.com</a>
                   <span className="mt-2 block text-xs uppercase tracking-[0.14em] text-gray-400">Chief Executive Officer</span>
                   <a href="mailto:edgar@gogreenmw.com" className="hover:text-primary-light transition-colors block">edgar@gogreenmw.com</a>
                 </div>
