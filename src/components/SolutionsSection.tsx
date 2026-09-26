@@ -65,7 +65,28 @@ const solutions: Solution[] = [
     icon: Recycle,
     title: "Circular Economy & Resource Recovery",
     summary:
-      "We recover materials and organic resources from waste and convert them into productive environmental and economic value.",
+      // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL WORDING, flagged
+      // for client review — each of these claimed present-tense delivery:
+      //   "We RECOVER materials and organic resources from waste and
+      //    CONVERT them into productive … value."  -> "are designed to
+      //    recover … and convert": nothing has been recovered.
+      //   "We DEVELOP renewable energy solutions that IMPROVE access…"
+      //    -> "are developing … designed to improve".
+      //   "We DEVELOP clean cooking solutions that ADDRESS…" ->
+      //    "are developing … designed to address".
+      //   "We ARE ESTABLISHING a structured collection network…"
+      //    -> unchanged tense, but "that CONNECTS" -> "intended to
+      //    connect": the network does not exist to connect anything.
+      //   "We PRIORITISE source segregation…" -> "Our approach
+      //    prioritises": a stated method, not an activity performed.
+      //   "We CREATE economic opportunity across our value chains…"
+      //    -> "Our model is designed to create": no opportunity has
+      //    been created for anyone.
+      // The solar-EV entry was already correctly framed ("are
+      // exploring") and is left unchanged.
+      // All technical specificity — energy, mobility, clean cooking,
+      // segregation, recycling markets, value chains — is preserved.
+      "Our model is designed to recover materials and organic resources from waste and convert them into productive environmental and economic value.",
     href: "/solutions#materials-recovery",
   },
   {
@@ -73,7 +94,7 @@ const solutions: Solution[] = [
     icon: Sun,
     title: "Renewable Energy & Solar",
     summary:
-      "We develop renewable energy solutions that improve access to reliable, affordable and low-carbon electricity.",
+      "We are developing renewable energy solutions designed to improve access to reliable, affordable and low-carbon electricity.",
     href: "/solutions#clean-energy",
   },
   {
@@ -89,7 +110,7 @@ const solutions: Solution[] = [
     icon: Flame,
     title: "Clean Cooking & Bioenergy",
     summary:
-      "We develop clean cooking solutions that address the health, environmental and economic impacts of charcoal and traditional biomass.",
+      "We are developing clean cooking solutions designed to address the health, environmental and economic impacts of charcoal and traditional biomass.",
     href: "/solutions#organic-waste",
   },
   {
@@ -97,7 +118,7 @@ const solutions: Solution[] = [
     icon: Package,
     title: "Aluminium Can Recycling",
     summary:
-      "We are establishing a structured collection network that connects community collectors with formal regional recycling markets.",
+      "We are establishing a structured collection network intended to connect community collectors with formal regional recycling markets.",
     href: "/solutions#materials-recovery",
   },
   {
@@ -105,7 +126,7 @@ const solutions: Solution[] = [
     icon: Trash,
     title: "Climate-Smart Waste Management",
     summary:
-      "We prioritise source segregation, collection, recovery, recycling and resource-to-energy conversion to reduce pollution.",
+      "Our approach prioritises source segregation, collection, recovery, recycling and resource-to-energy conversion to reduce pollution.",
     href: "/solutions#organic-waste",
   },
   {
@@ -113,7 +134,7 @@ const solutions: Solution[] = [
     icon: Users,
     title: "Community Livelihoods",
     summary:
-      "We create economic opportunity across our value chains for youth, women-led enterprises, informal waste collectors and local entrepreneurs.",
+      "Our model is designed to create economic opportunity across our value chains for youth, women-led enterprises, informal waste collectors and local entrepreneurs.",
     href: "/solutions#livelihoods",
   },
 ];

@@ -120,8 +120,14 @@ const audiences = [
   {
     icon: Users,
     title: "Communities",
+    // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "Local groups,
+    // households and community enterprises we WORK WITH DIRECTLY."
+    // -> "we intend to work with directly": we have no community
+    // relationships yet, and this list renders under an "audiences we
+    // serve" heading that implied a live constituency. The three group
+    // types UNCHANGED.
     description:
-      "Local groups, households and community enterprises we work with directly.",
+      "Local groups, households and community enterprises we intend to work with directly.",
   },
   {
     icon: Briefcase,
@@ -165,8 +171,12 @@ const values = [
   {
     icon: Leaf,
     title: "Sustainability",
+    // ORIGINAL: "We IMPROVE the environment and the economics in the same
+    // intervention, rather than trading one against the other." -> "are
+    // designed to improve": no intervention has happened. The
+    // not-a-trade-off position is UNCHANGED.
     description:
-      "We improve the environment and the economics in the same intervention, rather than trading one against the other.",
+      "Our model is designed to improve the environment and the economics in the same intervention, rather than trading one against the other.",
   },
   {
     icon: Recycle,
@@ -177,14 +187,25 @@ const values = [
   {
     icon: Users,
     title: "Community Empowerment",
+    // ORIGINAL: "Communities ARE DELIVERY PARTNERS, not recipients — we
+    // AGREE roles and decisions up front and ARE HELD TO the commitments
+    // we set together." This was the strongest unsupported claim on the
+    // page: it asserted that partner agreements already exist. ->
+    // "are intended to be" / "we plan to agree": the commitment is to the
+    // model, not to agreements in place. The
+    // partners-not-recipients principle is UNCHANGED.
     description:
-      "Communities are delivery partners, not recipients — we agree roles and decisions up front and are held to the commitments we set together.",
+      "Communities are intended to be delivery partners, not recipients — we plan to agree roles and decisions up front and hold ourselves to the commitments we set together.",
   },
   {
     icon: Lightbulb,
     title: "Innovation",
+    // ORIGINAL: "We TEST SMALL before scaling and DROP what does not
+    // hold up IN THE FIELD" — claims field testing has already happened.
+    // -> "We plan to test small before scaling and to drop what does not
+    // hold up in the field". The cost/reliability bar is UNCHANGED.
     description:
-      "We test small before scaling and drop what does not hold up in the field; new technology has to earn its place on cost and reliability.",
+      "We plan to test small before scaling and to drop what does not hold up in the field; new technology has to earn its place on cost and reliability.",
   },
   {
     icon: ShieldCheck,
@@ -226,10 +247,17 @@ export default function AboutPage() {
             environment.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-green-100 md:text-lg">
+            {/* PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "We
+                DEVELOP practical circular-economy solutions THAT TURN waste
+                and underused resources into…" -> "are building … designed
+                to turn": nothing has been turned into anything. Matches
+                the reframed "Who We Are" paragraph further down the page,
+                so the hero and the body no longer describe the company
+                differently. The four outputs UNCHANGED. */}
             Go Green Resources Limited is an environmental enterprise based in
-            Lilongwe. We develop practical circular-economy solutions that turn
-            waste and underused resources into clean energy, recovered
-            materials and economic opportunity.
+            Lilongwe. We are building practical circular-economy solutions
+            designed to turn waste and underused resources into clean energy,
+            recovered materials and economic opportunity.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row md:gap-4">
             <Link
@@ -328,20 +356,60 @@ export default function AboutPage() {
             <div className="space-y-5 text-base leading-relaxed text-gray-700 md:text-lg lg:col-span-7">
               <p>
                 Go Green Resources Limited is a Malawian environmental
-                enterprise based in Lilongwe. We develop practical
+                enterprise based in Lilongwe. We are building practical
                 circular-economy solutions for a cleaner, more
                 resource-efficient Malawi.
               </p>
+
+              {/* ── OUR STAGE (Priority 1) ─────────────────────
+                  NEW. An explicit, confident statement of the company's
+                  actual stage, placed directly under the opening
+                  paragraph so a visitor learns it early rather than
+                  inferring a track record that does not exist.
+
+                  The incorporation year is a PLACEHOLDER, matching the
+                  "Year of Incorporation —" field in the panel beside
+                  this text. The same style (rounded card, amber accent,
+                  bold label) is used as the existing "Placeholder" flags
+                  so the page keeps one visual language. Update the year
+                  in BOTH places when the client confirms it.
+
+                  Tone is deliberately forward-looking, not apologetic:
+                  the company is real, the model is real, the work has not
+                  started. */}
+              <div className="rounded-2xl border border-primary/20 bg-[#f6faf7] p-6 md:p-7">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">
+                  Our Stage
+                </p>
+                <p className="mt-3 text-base leading-relaxed text-gray-800 md:text-lg">
+                  Go Green Resources Limited was established in{" "}
+                  <span className="font-bold text-primary">[year]</span> to
+                  build circular economy solutions for Malawi. We are
+                  currently in our founding phase — building our team,
+                  structuring our first pilot projects, and engaging early
+                  partners and funders.
+                </p>
+              </div>
+
               <p>
+                {/* ORIGINAL: "Every project we DELIVER is designed to
+                    convert that value into…" -> "Every project we plan to
+                    deliver": nothing has been delivered. The three outputs
+                    UNCHANGED. */}
                 We treat waste and underused resources as value to be recovered
-                — not simply something to dispose of. Every project we deliver
-                is designed to convert that value into clean energy, recovered
-                materials and sustainable livelihoods.
+                — not simply something to dispose of. Every project we plan to
+                deliver is designed to convert that value into clean energy,
+                recovered materials and sustainable livelihoods.
               </p>
               <p>
+                {/* ORIGINAL: "…so the benefits WE CREATE can last." ->
+                    "we aim to create": no benefits have been created yet.
+                    The commercial-not-charity position is unchanged and is
+                    deliberate — it is a statement of intent about how the
+                    company will be built, not a claim of performance. */}
                 We are a commercial enterprise, not a charity. Environmental
                 sustainability and economic viability are designed into the same
-                system, so the benefits we create can last.
+                system, so the benefits we aim to create can last.
               </p>
             </div>
           </div>
@@ -361,9 +429,12 @@ export default function AboutPage() {
             <h2 className="mt-4 text-3xl font-extrabold leading-[1.12] tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
               How we got here.
             </h2>
+            {/* ORIGINAL: "From a founding idea to a working collection,
+                conversion and livelihoods network." — "a working ...
+                network" claimed an operating network. */}
             <p className="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
-              From a founding idea to a working collection, conversion and
-              livelihoods network.
+              From a founding idea to a designed collection, conversion and
+              livelihoods network — and the work now under way to build it.
             </p>
           </div>
 

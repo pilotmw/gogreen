@@ -42,7 +42,22 @@ const impactAreas: ImpactArea[] = [
     title: "Clean Energy",
     headline: "Powering a cleaner, more sustainable Malawi.",
     description:
-      "We develop and promote clean, affordable energy solutions — renewable energy, solar power, biogas and energy-efficient technologies — that reduce dependence on fossil fuels and unreliable traditional sources.",
+      // PRE-OPERATIONAL REFRAME (Priority 2, homepage copy). All six
+      // descriptions below claimed present-tense delivery. Each is now
+      // planned/design intent, with the original quoted. The technology
+      // and actor lists are UNCHANGED in every case — the brief requires
+      // that technical depth be preserved and only the tense move.
+      //
+      // NOTE: this array is the HOMEPAGE source. src/data/impactContent.ts
+      // holds the /impact page's own trimmed variants, reframed
+      // separately. The two are deliberately NOT re-synchronised — the
+      // 20-30% length difference between them is the de-duplication
+      // Phase 0.3 established, and both now say the same thing at
+      // different lengths.
+      //
+      // ORIGINAL: "We DEVELOP AND PROMOTE … that REDUCE dependence…"
+      // → "are building and promoting … designed to reduce".
+      "We are building and promoting clean, affordable energy solutions — renewable energy, solar power, biogas and energy-efficient technologies — designed to reduce dependence on fossil fuels and unreliable traditional sources.",
     icon: Sun,
     featured: true,
     span: "lg:col-span-7",
@@ -51,7 +66,11 @@ const impactAreas: ImpactArea[] = [
     title: "Waste Recovery",
     headline: "Turning waste into valuable resources.",
     description:
-      "We create collection, sorting, recycling, reuse and composting systems so waste is recovered rather than landfilled, waterways or open space.",
+      // ORIGINAL: "We CREATE collection, sorting, recycling, reuse and composting systems SO WASTE IS RECOVERED rather than landfilled…"
+      // → "are designing … intended to keep waste out of": no system
+      // exists and nothing has been recovered. All five system types and
+      // the three disposal routes are UNCHANGED.
+      "We are designing collection, sorting, recycling, reuse and composting systems intended to keep waste out of landfill, waterways and open space.",
     icon: Recycle,
     span: "lg:col-span-5",
   },
@@ -59,7 +78,10 @@ const impactAreas: ImpactArea[] = [
     title: "Green Jobs",
     headline: "Creating livelihoods through the green economy.",
     description:
-      "Across collection, recycling, installation, maintenance, manufacturing and distribution, we back skills development and local businesses — particularly for young people.",
+      // ORIGINAL: "…we BACK skills development and local businesses — particularly for young people."
+      // → "plan to back": we back nobody yet. The six value-chain stages
+      // and the youth focus are UNCHANGED.
+      "Across collection, recycling, installation, maintenance, manufacturing and distribution, we plan to back skills development and local businesses — particularly for young people.",
     icon: BriefcaseBusiness,
     span: "lg:col-span-5",
   },
@@ -67,7 +89,10 @@ const impactAreas: ImpactArea[] = [
     title: "Circular Supply Chains",
     headline: "Keeping resources in use and value within our communities.",
     description:
-      "We connect waste producers, collectors, recyclers, manufacturers, farmers, businesses and consumers so materials move back into the economy instead of becoming waste.",
+      // ORIGINAL: "We CONNECT waste producers, collectors, recyclers, manufacturers, farmers, businesses and consumers SO MATERIALS MOVE BACK into the economy…"
+      // → "plan to connect": none of these links exist. All seven actor
+      // types UNCHANGED.
+      "We plan to connect waste producers, collectors, recyclers, manufacturers, farmers, businesses and consumers so materials move back into the economy instead of becoming waste.",
     icon: Network,
     featured: true,
     span: "lg:col-span-7",
@@ -76,7 +101,10 @@ const impactAreas: ImpactArea[] = [
     title: "Community Empowerment",
     headline: "Building skills, opportunities, and sustainable communities.",
     description:
-      "We work directly with households, businesses, institutions and communities on environmental awareness, practical skills, clean technologies and income-generating opportunities.",
+      // ORIGINAL: "We WORK DIRECTLY WITH households, businesses, institutions and communities…"
+      // → "plan to work directly with": this claimed an existing community
+      // engagement programme. All four audiences and four topics UNCHANGED.
+      "We plan to work directly with households, businesses, institutions and communities on environmental awareness, practical skills, clean technologies and income-generating opportunities.",
     icon: HeartHandshake,
     span: "lg:col-span-6",
   },
@@ -84,7 +112,10 @@ const impactAreas: ImpactArea[] = [
     title: "Environmental Protection",
     headline: "Protecting our environment for generations to come.",
     description:
-      "By reducing pollution, improving waste management, promoting renewable energy and encouraging responsible resource use, we support healthier communities and long-term climate resilience.",
+      // ORIGINAL: "…we SUPPORT healthier communities and long-term climate resilience."
+      // → "intend to support": no pollution has been reduced. The four
+      // intervention areas UNCHANGED.
+      "By reducing pollution, improving waste management, promoting renewable energy and encouraging responsible resource use, we intend to support healthier communities and long-term climate resilience.",
     icon: Leaf,
     span: "lg:col-span-6",
   },

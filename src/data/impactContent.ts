@@ -131,7 +131,8 @@ export const impactAreas: ImpactArea[] = [
     title: "Clean Energy",
     headline: "Powering a cleaner, more sustainable Malawi.",
     description:
-      "We develop clean, affordable energy solutions — renewable power, solar, biogas and efficient technologies — that reduce dependence on fossil fuels.",
+      // ORIGINAL: "We develop clean, affordable energy solutions — renewable power, solar, biogas and efficient technologies — that reduce dependence on fossil fuels." → "are building … designed to reduce": nothing has been developed and nothing reduced yet. The technology list is UNCHANGED — the brief requires that depth be preserved.
+      "We are building clean, affordable energy solutions — renewable power, solar, biogas and efficient technologies — designed to reduce dependence on fossil fuels.",
     icon: Sun,
     featured: true,
     span: "lg:col-span-7",
@@ -144,7 +145,8 @@ export const impactAreas: ImpactArea[] = [
     title: "Waste Recovery",
     headline: "Turning waste into valuable resources.",
     description:
-      "We build collection, sorting, recycling and composting systems so waste is recovered, not dumped or burned.",
+      // ORIGINAL: "We build collection, sorting, recycling and composting systems so waste is recovered, not dumped or burned." → "are designing … intended to keep waste out of": no system has been built and no waste diverted. The four system types are UNCHANGED.
+      "We are designing collection, sorting, recycling and composting systems intended to keep waste out of dumpsites and open burning.",
     icon: Recycle,
     span: "lg:col-span-5",
     metric: {
@@ -156,7 +158,8 @@ export const impactAreas: ImpactArea[] = [
     title: "Green Jobs",
     headline: "Creating livelihoods through the green economy.",
     description:
-      "In collection, recycling, installation and manufacturing, we back skills development and local businesses, especially for young people.",
+      // ORIGINAL: "In collection, recycling, installation and manufacturing, we back skills development and local businesses, especially for young people." → "plan to back": we currently back nobody. The sector list is UNCHANGED.
+      "Across collection, recycling, installation and manufacturing, we plan to back skills development and local businesses, especially for young people.",
     icon: BriefcaseBusiness,
     span: "lg:col-span-5",
     metric: {
@@ -168,7 +171,8 @@ export const impactAreas: ImpactArea[] = [
     title: "Circular Supply Chains",
     headline: "Keeping resources in use and value within our communities.",
     description:
-      "We connect producers, collectors, recyclers, manufacturers and farmers so materials return to the economy rather than becoming waste.",
+      // ORIGINAL: "We connect producers, collectors, recyclers, manufacturers and farmers so materials return to the economy rather than becoming waste." → "plan to connect": none of these links exist yet. The actor list is UNCHANGED.
+      "We plan to connect producers, collectors, recyclers, manufacturers and farmers so materials return to the economy rather than becoming waste.",
     icon: Network,
     featured: true,
     span: "lg:col-span-7",
@@ -181,7 +185,8 @@ export const impactAreas: ImpactArea[] = [
     title: "Community Empowerment",
     headline: "Building skills, opportunities, and sustainable communities.",
     description:
-      "We work with households, businesses and institutions on environmental awareness, practical skills and income-generating opportunities.",
+      // ORIGINAL: "We work with households, businesses and institutions on environmental awareness, practical skills and income-generating opportunities." → "plan to work with": this claimed an existing community engagement programme.
+      "We plan to work with households, businesses and institutions on environmental awareness, practical skills and income-generating opportunities.",
     icon: HeartHandshake,
     span: "lg:col-span-6",
     metric: {
@@ -193,7 +198,8 @@ export const impactAreas: ImpactArea[] = [
     title: "Environmental Protection",
     headline: "Protecting our environment for generations to come.",
     description:
-      "By reducing pollution, improving waste management and promoting renewable energy, we support healthier communities and climate resilience.",
+      // ORIGINAL: "By reducing pollution, improving waste management and promoting renewable energy, we support healthier communities and climate resilience." → "intend to support": no pollution has been reduced.
+      "By reducing pollution, improving waste management and promoting renewable energy, we intend to support healthier communities and climate resilience.",
     icon: Leaf,
     span: "lg:col-span-6",
     metric: {
@@ -214,7 +220,14 @@ export interface Sdg {
   hex: string;
   onDark: boolean;
   icon: LucideIcon;
-  /** How Go Green's work touches this goal, in one line. */
+  /** How Go Green's model touches this goal, in one line.
+      PRE-OPERATIONAL REFRAME (Priority 4): the brief keeps the SDG
+      alignment section — stating intentions against the SDGs is
+      legitimate for a pre-operational company — but requires it be
+      framed as "how our model ALIGNS WITH" rather than "how our
+      RESULTS CONTRIBUTE TO". All five were result statements and are
+      now model/alignment statements. No SDG goal, colour or tile has
+      changed. */
   contribution: string;
 }
 
@@ -225,7 +238,9 @@ export const sdgs: Sdg[] = [
     hex: "#FCC30B",
     onDark: false,
     icon: Lightbulb,
-    contribution: "Biogas and clean cooking systems displace charcoal and firewood.",
+    // ORIGINAL: "Biogas and clean cooking systems displace charcoal and firewood."
+    contribution:
+      "Our model is aligned to SDG 7 because biogas and clean cooking systems are designed to displace charcoal and firewood.",
   },
   {
     number: "8",
@@ -233,7 +248,9 @@ export const sdgs: Sdg[] = [
     hex: "#A21942",
     onDark: true,
     icon: BriefcaseBusiness,
-    contribution: "Collection, processing and distribution create paid green roles.",
+    // ORIGINAL: "Collection, processing and distribution create paid green roles."
+    contribution:
+      "Our model is aligned to SDG 8 because collection, processing and distribution are designed to create paid green roles.",
   },
   {
     number: "11",
@@ -241,7 +258,9 @@ export const sdgs: Sdg[] = [
     hex: "#FD9D24",
     onDark: true,
     icon: Building2,
-    contribution: "Urban waste recovery keeps material out of city dumpsites and drains.",
+    // ORIGINAL: "Urban waste recovery keeps material out of city dumpsites and drains."
+    contribution:
+      "Our model is aligned to SDG 11 because urban waste recovery is designed to keep material out of city dumpsites and drains.",
   },
   {
     number: "12",
@@ -249,7 +268,9 @@ export const sdgs: Sdg[] = [
     hex: "#BF8B2E",
     onDark: true,
     icon: Recycle,
-    contribution: "Recovery and reuse systems design material out of the waste stream.",
+    // ORIGINAL: "Recovery and reuse systems design material out of the waste stream."
+    contribution:
+      "Our model is aligned to SDG 12 because recovery and reuse systems are designed to keep material out of the waste stream.",
   },
   {
     number: "13",
@@ -257,14 +278,21 @@ export const sdgs: Sdg[] = [
     hex: "#3F7E44",
     onDark: true,
     icon: Leaf,
-    contribution: "Avoided emissions from recovery and cleaner fuels support mitigation.",
+    // ORIGINAL: "Avoided emissions from recovery and cleaner fuels support mitigation."
+    contribution:
+      "Our model is aligned to SDG 13 because avoided emissions from recovery and cleaner fuels are intended to support mitigation.",
   },
 ];
 
 /* ── 4. SUSTAINABILITY FRAMEWORKS ────────────────────────────── */
 export interface Framework {
   name: string;
-  /** One sentence on how the work relates to this framework. */
+  /** One sentence on how the model relates to this framework.
+      PRE-OPERATIONAL REFRAME (Priority 4): aligned to "how our model
+      aligns with", not "how our results contribute to". The first four
+      said "Our … programmes / activity / work", implying an existing
+      programme; the two flagged items already used "is intended to" and
+      are unchanged apart from the note. */
   alignment: string;
   /** Renders a visible "detail to be confirmed" flag. Set on the two
       items where no specific framework is named, so no alignment
@@ -275,26 +303,30 @@ export interface Framework {
 export const frameworks: Framework[] = [
   {
     name: "Malawi National Energy Policy",
+    // ORIGINAL: "Our biogas and clean cooking programmes widen access to modern cooking energy in place of charcoal and firewood, which is the direction the policy sets." → "The biogas and clean cooking solutions we are developing are designed to widen access…": no programmes exist yet.
     alignment:
-      "Our biogas and clean cooking programmes widen access to modern cooking energy in place of charcoal and firewood, which is the direction the policy sets.",
+      "The biogas and clean cooking solutions we are developing are designed to widen access to modern cooking energy in place of charcoal and firewood, which is the direction the policy sets.",
   },
   {
     name: "Malawi Nationally Determined Contributions (NDCs)",
     // Deliberately directional: no specific NDC sector or target number is
     // named, because none has been verified. Client to confirm the sector
     // reference before launch.
+    // ORIGINAL: "Avoiding emissions from recovered waste and from cooking fuels that replace biomass count towards the mitigation commitments in Malawi's NDCs." → "is intended to count towards": nothing has been avoided or recovered yet.
     alignment:
-      "Avoiding emissions from recovered waste and from cooking fuels that replace biomass count towards the mitigation commitments in Malawi's NDCs.",
+      "Emissions avoided through recovered waste and through cooking fuels that replace biomass are intended to count towards the mitigation commitments in Malawi's NDCs.",
   },
   {
     name: "National Solid Waste Management Strategy",
+    // ORIGINAL: "Our collection, sorting and recycling networks are the on-the-ground waste management activity that a national solid waste strategy depends on." → "are designed to be": the networks are planned, not operating.
     alignment:
-      "Our collection, sorting and recycling networks are the on-the-ground waste management activity that a national solid waste strategy depends on.",
+      "The collection, sorting and recycling networks we are designing are intended to be the on-the-ground waste management activity that a national solid waste strategy depends on.",
   },
   {
     name: "United Nations Sustainable Development Goals (SDGs)",
+    // ORIGINAL: "The work maps directly to SDG 7, 8, 11, 12 and 13, shown as tiles above." → "Our model maps directly to": "the work" implied delivered work.
     alignment:
-      "The work maps directly to SDG 7, 8, 11, 12 and 13, shown as tiles above.",
+      "Our model maps directly to SDG 7, 8, 11, 12 and 13, shown as tiles above.",
   },
   {
     // FLAGGED FOR CLIENT REVIEW — kept rather than removed, per the brief.

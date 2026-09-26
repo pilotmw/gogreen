@@ -37,7 +37,12 @@ import { ArrowRight } from "lucide-react";
 import CircularModelFlow from "@/components/CircularModelFlow";
 
 /* DRAFT COPY — confirm final wording with client. */
-const intro = "We turn waste and underused resources into energy, materials, and opportunity.";
+  // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "We TURN waste and
+  // underused resources into energy, materials, and opportunity." A
+  // present-tense claim of delivered conversion, and the single
+  // strongest overstatement in the "Our Response" band. Reframed as
+  // model intent. The three output categories are UNCHANGED.
+  const intro = "Our model is designed to turn waste and underused resources into energy, materials, and opportunity.";
 
 export default function ResponseSection() {
   const prefersReducedMotion = useReducedMotion();
@@ -177,7 +182,11 @@ export default function ResponseSection() {
 
         {/* ── 4. SINGLE CTA ─────────────────────────────
             The closing statement ("A greener economy is not one solution. It is
-            a connected system." + "GoGreen Resources builds those connections.")
+            // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "GoGreen Resources
+      // BUILDS those connections." -> "is building": we have built none
+      // of them. "a connected system" is retained as the design intent
+      // it now correctly reads as.
+      a connected system." + "GoGreen Resources is building those connections.")
             was removed — it only restated the section opening. This is the
             section's one and only CTA. */}
         <div ref={closingRef} className="mx-auto mt-14 max-w-4xl text-center md:mt-20">

@@ -22,6 +22,22 @@ BASE="${BASE%/}"
 # Cache-bust every request so a stale CDN edge cannot produce a false pass.
 CB="cb=$(date +%s)-$$"
 
+# ---------------------------------------------------------------------------
+# PREFLIGHT - refuse to run against an unreachable target.
+#
+# Without this, a connection failure makes `fetch` return an EMPTY body, and
+# every `absent` assertion then passes vacuously. A network error would be
+# reported as a clean bill of health, which is the worst possible failure
+# mode for a smoke test. Caught in practice: the first local run of this
+# script reported 19 passes against a server WSL could not reach.
+# ---------------------------------------------------------------------------
+if ! curl -sS --max-time 30 -o /dev/null -A "verify-fixes/1.0" "$BASE/?$CB"; then
+  printf 'FATAL: cannot reach %s - aborting rather than reporting false passes.\n' "$BASE" >&2
+  printf 'If BASE is a local server and you are in WSL, use the Windows host IP\n' >&2
+  printf '(ip route show default | awk "{print \\$3}") instead of 127.0.0.1.\n' >&2
+  exit 2
+fi
+
 PASS=0
 FAIL=0
 
@@ -129,6 +145,56 @@ IMPACT=$(fetch /impact)
 check "/impact shows 6 placeholder metrics"  "$(count "$IMPACT" 'Placeholder metric')" "6"
 check "homepage shows none"                  "$(count "$INDEX"  'Placeholder metric')" "0"
 absent "old untrimmed impact copy is gone"   "$IMPACT" "unreliable traditional sources"
+
+printf '\n%s[0.4] Pre-operational framing (client brief)%s\n' "$YLW" "$RST"
+# Every string below was a fabricated or operational claim, verified
+# against the rendered HTML. The `absent` assertions are the ones that
+# matter: they fail if any of the old copy is ever reintroduced.
+PROJ=$(fetch /projects)
+HOWIT=$(fetch /how-it-works)
+
+absent "homepage has no '1,200+'-style figure"  "$INDEX" '1,200+'
+absent "homepage has no '3,500+'-style figure"  "$INDEX" '3,500+'
+absent "no '>Ongoing<' project status"          "$PROJ"  '>Ongoing<'
+absent "no '>Completed<' project status"        "$PROJ"  '>Completed<'
+absent "no invented 'Lilongwe, 2025' case study" "$INDEX" 'Lilongwe, 2025'
+absent "no 'waste is recovered rather than'"    "$INDEX" 'waste is recovered rather than'
+absent "no 'every project we deliver'"          "$INDEX" 'every project we deliver'
+absent "meta description no longer 'develops'"  "$INDEX" 'Limited develops circular economy'
+absent "OG description no longer 'Transforming'" "$INDEX" 'content="Transforming waste'
+absent "communities not stated as partners yet" "$ABOUT" 'Communities are delivery partners'
+absent "no 'we work with directly' on About"    "$ABOUT" 'we work with directly'
+
+exists "founding-phase stage statement"         "$ABOUT" 'founding phase'
+exists "first pilot framed as intent"           "$INDEX" 'Our First Pilot Site'
+exists "roadmap heading on /projects"           "$PROJ"  'Our Roadmap'
+exists "impact goals heading on /impact"        "$IMPACT" 'Our Impact Goals'
+exists "partner strip admits no partners yet"   "$INDEX" 'no partners in place yet'
+exists "targets-not-results note on /impact"    "$IMPACT" 'not results'
+absent "financing section claims no badge"      "$HOWIT" 'Financing secured'
+# Added after the first negative control: the PartnerLogos reframe had been
+# made but nothing asserted the old claim was gone, so a revert would have
+# passed the suite. The mutant run is what surfaced this.
+absent "old partner-network claim is gone"      "$INDEX" 'We work with government institutions, development partners, funders and private-sector clients.'
+# The strip used to render "In partnership with" directly above "We have no
+# partners in place yet", contradicting its own disclaimer.
+absent "no 'In partnership with' label"         "$INDEX" 'In partnership with'
+absent "no 'are delivery partners' claim"       "$ABOUT" 'Communities are delivery partners'
+# The status badges are card text, not the filter tab ids, so anchor on the
+# element boundary: 'project-status-tab-Ongoing' must not satisfy this.
+absent "no project card badge says Ongoing"     "$PROJ"  '>Ongoing<'
+absent "no project card badge says Completed"   "$PROJ"  '>Completed<'
+
+# The brief's hard constraint: reframing the tense must not cost the site
+# its technical substance. These live on /solutions and /projects, not the
+# homepage - the first pass of these assertions wrongly pointed at $INDEX
+# and failed, so the location is stated explicitly here.
+SOLUTIONS=$(fetch /solutions)
+exists "technical depth: anaerobic digestion"   "$SOLUTIONS" 'naerobic digestion'
+exists "technical depth: bio-slurry"            "$SOLUTIONS" 'io-slurry'
+exists "technical depth: black soldier fly"     "$SOLUTIONS" 'lack soldier fly'
+exists "technical depth: cylinder exchange"     "$SOLUTIONS" 'ylinder exchange'
+exists "technical depth: materials recovery"    "$INDEX" 'aterials recovery'
 
 printf '\n%s[global] Structure%s\n' "$YLW" "$RST"
 for p in / /about /how-it-works /solutions /projects /impact /contact /404; do

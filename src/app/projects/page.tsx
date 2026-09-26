@@ -54,6 +54,7 @@ import {
 
 import ProjectCard from "@/components/ProjectCard";
 import PartnerLogos from "@/components/PartnerLogos";
+import RoadmapPhases from "@/components/RoadmapPhases";
 import SectionHeading from "@/components/SectionHeading";
 import {
   partnerships,
@@ -126,13 +127,22 @@ export default function ProjectsPage() {
 
   return (
     <>
-      {/* ── 1. HERO (unchanged dark treatment) ────────────────────── */}
+      {/* ── 1. HERO — now carries the page's <h1> ───────────────────
+          PRE-OPERATIONAL REFRAME (Priority 3). Page heading retitled
+          "Our Projects" → "Our Roadmap", and the subtitle no longer
+          claims work is "happening".
+
+          PER THE BRIEF'S OWN INSTRUCTION, THE NAV LABEL IS UNCHANGED —
+          the Navbar still reads "Projects". The brief says to confirm a
+          nav rename with the client because it affects main site
+          navigation, so only the page heading moved. Options are listed
+          in the handover notes for their decision. */}
       <section className="bg-gradient-to-br from-green-900 via-green-800 to-blue-900 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             titleLevel="h1"
-            title="Our Projects"
-            subtitle="Where our work is happening, what stage each project is at, and the area of work it belongs to."
+            title="Our Roadmap"
+            subtitle="Where we are starting, what we plan to build next, and the order we intend to build it in. None of it is built yet."
             centered={false}
             subtitleClass="text-white/90"
           />
@@ -151,11 +161,19 @@ export default function ProjectsPage() {
                 An Integrated Circular Model
               </h2>
             </div>
+            {/* ORIGINAL: "Go Green Resources Limited RECOVERS waste and
+                underused resources and TRANSFORMS them into … OUR WORK
+                SPANS energy access, waste management, climate finance,
+                and community development." → "is building a model
+                designed to recover … is designed to span": nothing has
+                been recovered or transformed. The four output types and
+                the four sector names are UNCHANGED. */}
             <p className="text-gray-700 text-lg mt-6 max-w-4xl">
-              Go Green Resources Limited recovers waste and underused resources
-              and transforms them into clean energy, recovered materials,
-              sustainable products, and economic opportunity. Our work spans
-              energy access, waste management, climate finance, and community
+              Go Green Resources Limited is building a model designed to
+              recover waste and underused resources and transform them into
+              clean energy, recovered materials, sustainable products, and
+              economic opportunity. The model is designed to span energy
+              access, waste management, climate finance, and community
               development.
             </p>
             <div className="flex flex-wrap gap-3 mt-6">
@@ -173,12 +191,18 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* ── 3. PROJECTS (new primary section) ────────────────────── */}
+      {/* ── 3. ROADMAP PHASES (new, Priority 3) ─────────────────────
+          The phased plan sits ABOVE the project grid so the page reads
+          as a forward plan first. The grid, its ARIA tablist filter and
+          the category chips below are all unchanged. */}
+      <RoadmapPhases />
+
+      {/* ── 4. PROJECTS (primary section, now "planned activities") ── */}
       <section id="projects" className="bg-[#f6faf7]/70 py-16 md:py-24 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Projects"
-            subtitle="Each project below is grouped under the area of work it belongs to. Select a status to narrow the list."
+            title="Planned Activities"
+            subtitle="The activities we intend to carry out, grouped by the area of work each belongs to. Select a status to narrow the list."
           />
 
           {/* ── STATUS FILTER ──
@@ -316,12 +340,26 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* ── 5. KEY PARTNERSHIPS (kept, moved below Projects) ─────── */}
+      {/* ── 6. PARTNERSHIPS WE ARE SEEKING (was "Key Partnerships") ──
+          PRE-OPERATIONAL REFRAME (Priority 3). The brief asked for
+          "Key Partnerships" to become a target map rather than a list
+          of existing relationships.
+
+          ORIGINAL SUBTITLE: "We work with government institutions,
+          development partners, financial institutions, and
+          private-sector clients to structure, finance, and deliver
+          circular economy projects." — "We work with" was a flat
+          statement that relationships exist. None do. Replaced with an
+          explicit statement that we are seeking them.
+
+          The `id="partnerships"` anchor is UNCHANGED so any inbound link
+          to it still resolves. Per the brief, no partner names, logos
+          or marks have been added. */}
       <section id="partnerships" className="bg-[#f6faf7]/70 py-16 md:py-24 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Key Partnerships"
-            subtitle="We work with government institutions, development partners, financial institutions, and private-sector clients to structure, finance, and deliver circular economy projects."
+            title="Partners We Are Seeking"
+            subtitle="We have no partners in place yet. These are the relationships we are actively looking to build — the organisations we need alongside us to structure, finance and deliver circular economy projects in Malawi."
           />
 
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">

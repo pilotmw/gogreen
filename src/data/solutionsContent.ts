@@ -104,10 +104,25 @@ export const solutions: Solution[] = [
     id: "clean-energy",
     icon: "zap",
     title: "Clean Energy & Waste-to-Energy Solutions",
+    // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL WORDING, flagged for
+    // client review of the tense shift:
+    //   "Go Green Resources Limited DEVELOPS clean energy solutions THAT
+    //    CONVERT organic and biomass waste into usable fuel and SUPPORTS
+    //    adoption of cleaner cooking..." -> "is building ... designed to
+    //    convert", because no system has been built or fuels produced.
+    //   "This INCLUDES community-linked biogas systems..." -> "Our first
+    //    solutions are planned to include..." (the brief's own example).
+    //   "The company ALSO SUPPORTS access to clean cooking appliances..."
+    //    -> "is also structuring how to support access...".
+    //   "The REMAINING organic material IS RECOVERED as bio-slurry" ->
+    //    "would be recovered", because no digester is running.
+    // TECHNICAL DEPTH IS UNCHANGED: anaerobic digestion, feedstocks,
+    // bio-slurry, cylinder exchange, institutional and bulk-user
+    // distribution are all preserved in full.
     description: [
-      "Go Green Resources Limited develops clean energy solutions that convert organic and biomass waste into usable fuel and supports adoption of cleaner cooking and energy technologies as alternatives to charcoal and firewood.",
-      "This includes community-linked biogas systems using anaerobic digestion to convert food waste, agricultural residues, and animal waste into clean cooking fuel. The company also supports access to clean cooking appliances and fuels through models suited to target markets, including cylinder exchange, institutional distribution, and bulk-user distribution.",
-      "The remaining organic material is recovered as bio-slurry, an organic fertiliser that returns nutrients to the soil and further closes the resource loop.",
+      "Go Green Resources Limited is building clean energy solutions designed to convert organic and biomass waste into usable fuel, and to support adoption of cleaner cooking and energy technologies as alternatives to charcoal and firewood.",
+      "Our first solutions are planned to include community-linked biogas systems using anaerobic digestion to convert food waste, agricultural residues, and animal waste into clean cooking fuel. The company is also structuring how to support access to clean cooking appliances and fuels through models suited to target markets, including cylinder exchange, institutional distribution, and bulk-user distribution.",
+      "The remaining organic material would be recovered as bio-slurry, an organic fertiliser designed to return nutrients to the soil and further close the resource loop.",
     ],
     benefits: [
       "Reduced dependence on charcoal and firewood",
@@ -129,13 +144,31 @@ export const solutions: Solution[] = [
     id: "materials-recovery",
     icon: "recycle",
     title: "Materials Recovery & Recycling",
+    // ORIGINAL WORDING, flagged for client review:
+    //   "Go Green Resources Limited BUILDS structured recovery and
+    //    recycling networks" -> "is building ... intended to develop",
+    //    because no network exists yet.
+    //   "The company WORKS WITH community-based aggregators, retailers,
+    //    institutions, and commercial facilities to RECOVER materials
+    //    ..." -> "plans to work with ... to recover". This is the brief's
+    //    own named example, and it was the most overstated claim on the
+    //    site: we have no aggregator relationships at all.
+    //   "Recovered materials ARE SORTED, PROCESSED, and CHANNELLED" ->
+    //    "would be sorted", because no material has been recovered.
+    //   "the programme DEMONSTRATES that environmental sustainability
+    //    and economic development can work hand in hand" -> "is
+    //    intended to demonstrate". A programme cannot demonstrate
+    //    anything before it runs.
     description: [
-      "Go Green Resources Limited builds structured recovery and recycling networks for recyclable materials, beginning with aluminium used beverage cans and extendable to other recoverable waste streams.",
-      "The company works with community-based aggregators, retailers, institutions, and commercial facilities to recover materials that would otherwise pollute urban environments and waterways. Recovered materials are sorted, processed, and channelled into regional recycling and industrial value chains.",
-      "By connecting communities to regional recycling markets, the programme demonstrates that environmental sustainability and economic development can work hand in hand.",
+      "Go Green Resources Limited is building its approach to structured recovery and recycling networks for recyclable materials, beginning with aluminium used beverage cans and intended to extend to other recoverable waste streams.",
+      "The company plans to work with community-based aggregators, retailers, institutions, and commercial facilities to recover materials that would otherwise pollute urban environments and waterways. Recovered materials would be sorted, processed, and channelled into regional recycling and industrial value chains.",
+      "By connecting communities to regional recycling markets, the programme is intended to demonstrate that environmental sustainability and economic development can work hand in hand.",
     ],
     // These four benefits were already on the page — they were only
     // rendered above this section's own heading. Re-attached, not rewritten.
+    // They are outcome phrased, so the section LABEL is what carries the
+    // framing (see `benefitsLabel` in SolutionBlock) rather than each chip
+    // being rewritten into clumsy "designed to reduce" prose.
     benefits: [
       "Reduction in urban waste pollution",
       "Diversion of recyclable materials from dumpsites and drainage systems",
@@ -155,9 +188,14 @@ export const solutions: Solution[] = [
     id: "organic-waste",
     icon: "sprout",
     title: "Organic Waste Valorisation",
+    // ALREADY correctly framed ("IS DEVELOPING ... activities") and left
+    // unchanged — recording this so the client can see it was audited,
+    // not missed. The second paragraph's "They EXTEND the company's
+    // circular model ... while CREATING additional revenue streams" is
+    // softened, because the activities do not yet exist to do either.
     description: [
-      "Go Green Resources Limited is developing organic waste valorisation activities including composting and black soldier fly farming. These activities convert biodegradable waste into soil inputs and protein for animal feed.",
-      "They extend the company’s circular model into agriculture and food systems while creating additional revenue streams and environmental benefits, turning organic waste streams into productive outputs.",
+      "Go Green Resources Limited is developing organic waste valorisation activities including composting and black soldier fly farming. These activities are designed to convert biodegradable waste into soil inputs and protein for animal feed.",
+      "They are intended to extend the company’s circular model into agriculture and food systems while creating additional revenue streams and environmental benefits, turning organic waste streams into productive outputs.",
     ],
     benefits: [
       "Converts biodegradable waste into useful products",
@@ -179,9 +217,23 @@ export const solutions: Solution[] = [
     id: "livelihoods",
     icon: "users",
     title: "Community Livelihoods & Green Jobs",
+    // ORIGINAL WORDING, flagged for client review:
+    //   "Economic empowerment IS EMBEDDED INTO Go Green Resources
+    //    PROGRAMMES rather than being treated as a separate activity.
+    //    Aggregator and distribution networks CREATE income
+    //    opportunities..." -> "is designed to be embedded in the
+    //    programmes we are structuring ... are intended to create".
+    //    "These participants CAN EARN income through collection,
+    //    processing, and distribution" -> "would be able to earn",
+    //    because no participant has been enrolled.
+    //   "Communities ARE ACTIVE participants and economic partners"
+    //    -> "are intended to be active ... once the model is running",
+    //    because there are no community partnerships yet. This
+    //    sentence is important to soften honestly: it reads as a claim
+    //    of existing equal partnership.
     description: [
-      "Economic empowerment is embedded into Go Green Resources programmes rather than being treated as a separate activity. Aggregator and distribution networks create income opportunities for youth groups, women-led enterprises, informal waste collectors, and community-based entrepreneurs.",
-      "These participants can earn income through collection, processing, and distribution. Communities are active participants and economic partners, not merely beneficiaries.",
+      "Economic empowerment is designed into the Go Green Resources programmes we are structuring, rather than being treated as a separate activity. Aggregator and distribution networks are intended to create income opportunities for youth groups, women-led enterprises, informal waste collectors, and community-based entrepreneurs.",
+      "These participants would be able to earn income through collection, processing, and distribution. Communities are intended to be active participants and economic partners once the model is running, not merely beneficiaries.",
     ],
     // As with Materials Recovery, these benefits already existed and were
     // only in the wrong position. Re-attached, not rewritten.
@@ -205,8 +257,14 @@ export const solutions: Solution[] = [
     id: "advisory",
     icon: "shield",
     title: "Advisory, Carbon & Environmental Services",
+    // ORIGINAL WORDING, flagged for client review:
+    //   "Go Green Resources Limited SUPPORTS PARTNERS in structuring,
+    //    financing, and DELIVERING environmental ... projects" ->
+    //    "is structuring services to support partners ... once they are
+    //    engaged". We have no partners, so "supports partners" claimed
+    //    existing client relationships. The service LIST is unchanged.
     description: [
-      "Go Green Resources Limited supports partners in structuring, financing, and delivering environmental and circular economy projects. Services include environmental consultancy, carbon credit project development, technical support, implementation support, waste infrastructure support, and clean energy programme support.",
+      "Go Green Resources Limited is structuring advisory services intended to support partners in structuring, financing, and delivering environmental and circular economy projects. Services are planned to include environmental consultancy, carbon credit project development, technical support, implementation support, waste infrastructure support, and clean energy programme support.",
     ],
     // Existing page content, kept verbatim. These are services, not
     // benefits, so the heading is relabelled rather than rewritten.

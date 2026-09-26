@@ -1,4 +1,4 @@
-/* ────────────────────────────────────────────��──────────────────
+/* ────────────────────────────────────────────────────────────────
    HOW IT WORKS — SIMPLIFICATION SUMMARY (for client review)
 
    THE SITE-WIDE INCONSISTENCY, FIXED
@@ -87,66 +87,53 @@ import {
 } from "@/data/circularModel";
 
 /* ── FINANCING STRUCTURES ───────────────────────────────────────
-   `status` is null everywhere: the client has not confirmed which
-   instruments are live. Confirm and set per item, using the two values
-   the badge is built for: "Currently active" | "Available structure". */
-type FinancingStatus = "Currently active" | "Available structure";
+   PRE-OPERATIONAL REFRAME (Priority 5).
 
+   The `status` field and its <StatusBadge /> were REMOVED. The brief
+   says not to badge these as "Currently Active" vs "Available", since
+   none is confirmed active. A `FinancingStatus` type that allowed the
+   literal "Currently active" was a loaded gun in the codebase: the
+   next person to fill it in would have published a claim about a live
+   funding instrument on a company with no operations. There is now no
+   field to fill in, so the claim cannot be made by accident.
+
+   Each `desc` is now phrased as an option we are structuring or open to
+   pursuing, rather than a structure in use. The four instrument names
+   and their technical descriptions are UNCHANGED in substance. */
 const financing: {
   icon: React.ReactNode;
   title: string;
   desc: string;
-  status: FinancingStatus | null;
 }[] = [
   {
     icon: <Coins className="h-7 w-7 text-primary" />,
     title: "Grant-Funded Programmes",
-    desc: "Initial capital and technical support to establish recovery and conversion infrastructure.",
-    status: null,
+    desc: "Initial capital and technical support we are seeking to establish recovery and conversion infrastructure.",
   },
   {
     icon: <Banknote className="h-7 w-7 text-primary" />,
     title: "Commercial Financing",
-    desc: "Revenue-backed structures that move operations toward financial sustainability.",
-    status: null,
+    desc: "Revenue-backed structures we intend to structure to move operations toward financial sustainability.",
   },
   {
     icon: <Layers className="h-7 w-7 text-primary" />,
     title: "Blended Finance",
-    desc: "Combining concessional and commercial capital to de-risk circular economy investments.",
-    status: null,
+    desc: "Combining concessional and commercial capital, as an approach we are open to pursuing to de-risk circular economy investment.",
   },
   {
     icon: <Target className="h-7 w-7 text-primary" />,
     title: "Results-Based Arrangements",
-    desc: "Funding linked to verified environmental and social outcomes.",
-    status: null,
+    desc: "Funding linked to verified environmental and social outcomes, which we plan to be eligible for once we are reporting verified results.",
   },
 ];
 
-/* Renders either the confirmed status, or the flagged placeholder. */
-function StatusBadge({ status }: { status: FinancingStatus | null }) {
-  if (!status) {
-    return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-amber-800">
-        <Flag className="h-3 w-3" aria-hidden="true" />
-        Status to be confirmed
-      </span>
-    );
-  }
-
-  return (
-    <span
-      className={
-        status === "Currently active"
-          ? "inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-primary-dark"
-          : "inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-white px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-primary"
-      }
-    >
-      {status}
-    </span>
-  );
-}
+/* The <StatusBadge /> component that used to live here was removed in
+   the Priority 5 pre-operational reframe — see the note on
+   `financing` above. The "Currently Active" vs "Available" badge pair
+   is deliberately gone: the brief ruled it out because no instrument is
+   confirmed active, and the field that would have carried it no longer
+   exists. The section-level statement above the grid now carries the
+   framing for all four cards at once. */
 
 /* ── WORKED EXAMPLE ─────────────────────────────────────────────
    ⚠ ILLUSTRATIVE ONLY. A constructed trace of how the five steps work
@@ -329,7 +316,24 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      {/* ── FINANCING ────────────────────────────────── */}
+      {/* ── FINANCING ──────────────────────────────────
+          PRE-OPERATIONAL REFRAME (Priority 5).
+
+          The brief is explicit: do NOT carry "Currently Active" vs
+          "Available" status badges, because none of the four is confirmed
+          active. It asks instead for the whole section to be framed as
+          financing options the company is structuring or open to pursuing,
+          via a single intro line.
+
+          SO THE BADGE SYSTEM IS REMOVED, not merely left null. It
+          previously rendered "Status to be confirmed" on all four cards
+          (honest, but it advertised that a status system existed and
+          implied one day these would flip to "live"), and its type still
+          permitted the literal string "Currently active". A per-card
+          badge also fights the brief's own requested shape: a single
+          honest intro line instead of four repeated disclaimers.
+
+          Nothing claims an instrument is live, secured or committed to. */}
       <section
         id="financing"
         className="border-y border-primary/10 bg-[#f6faf7] py-20 md:py-28"
@@ -337,7 +341,7 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="Adaptable by Design"
-            subtitle="The same five steps can be funded through more than one structure. Each badge below shows whether that instrument is live or simply available — statuses are pending client confirmation."
+            subtitle="Our model is designed to work with a range of financing structures, including:"
           />
 
           <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -357,9 +361,6 @@ export default function HowItWorksPage() {
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">
                   {item.desc}
                 </p>
-                <div className="mt-5">
-                  <StatusBadge status={item.status} />
-                </div>
               </motion.article>
             ))}
           </div>

@@ -17,7 +17,12 @@ const pillars = [
     title2: "& Resource Recovery",
     icon: Zap,
     description:
-      "We develop practical clean-energy and resource-recovery solutions that convert underused resources and waste streams into useful energy and productive outputs.",
+      // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "We DEVELOP
+      // practical clean-energy and resource-recovery solutions that
+      // CONVERT underused resources and waste streams into useful
+      // energy and productive outputs." -> "are developing … designed to
+      // convert". Technical scope UNCHANGED.
+      "We are developing practical clean-energy and resource-recovery solutions designed to convert underused resources and waste streams into useful energy and productive outputs.",
     whatWeDo: [
       "Renewable energy and solar electrification projects",
       "Sustainable mobility and EV infrastructure",
@@ -33,7 +38,12 @@ const pillars = [
     title2: "& Circular Supply Chains",
     icon: Recycle,
     description:
-      "We support the recovery, processing and circulation of materials, helping businesses and communities reduce waste while keeping valuable resources in productive use.",
+      // ORIGINAL: "We SUPPORT the recovery, processing and circulation of
+      // materials, HELPING businesses and communities reduce waste while
+      // keeping valuable resources in productive use." -> "plan to
+      // support … designed to help": we support nobody yet. The three
+      // material stages and the two audiences are UNCHANGED.
+      "We plan to support the recovery, processing and circulation of materials, designed to help businesses and communities reduce waste while keeping valuable resources in productive use.",
     whatWeDo: [
       "Recovery, collection and aggregation of recyclable materials",
       "Aluminium can recycling and materials processing",
@@ -49,7 +59,13 @@ const pillars = [
     title2: "Green Livelihoods",
     icon: Users,
     description:
-      "We create opportunities for people and communities to participate in the green economy through skills, enterprise, employment and sustainable livelihood opportunities.",
+      // ORIGINAL: "We CREATE opportunities for people and communities to
+      // participate in the green economy through skills, enterprise,
+      // employment and sustainable livelihood opportunities." -> "Our
+      // model is designed to create": no opportunity has been created for
+      // anyone yet, and the doubled "opportunities … opportunities" is
+      // from the original. The four participation routes are UNCHANGED.
+      "Our model is designed to create opportunities for people and communities to participate in the green economy through skills, enterprise, employment and sustainable livelihoods.",
     whatWeDo: [
       "Skills development and training in green enterprises",
       "Supporting community-based green businesses and employment",
@@ -505,10 +521,18 @@ export default function ThreePillarsSection() {
             </span>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-gray-600 text-pretty md:text-lg">
-            GoGreen Resources works across clean energy and resource recovery,
-            circular materials and supply chains, and inclusive green
-            livelihoods—connecting environmental solutions with economic
-            opportunity.
+            {/* PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "GoGreen
+                Resources WORKS ACROSS clean energy and resource recovery,
+                circular materials and supply chains, and inclusive green
+                livelihoods—CONNECTING environmental solutions with economic
+                opportunity." -> "is building work across … and aims to
+                connect": nothing is connected yet. The three focus areas
+                are UNCHANGED, and the awkward "livelihoods-connecting"
+                hyphenation is repaired in the same edit. */}
+            GoGreen Resources is building work across clean energy and
+            resource recovery, circular materials and supply chains, and
+            inclusive green livelihoods — connecting environmental
+            solutions with economic opportunity.
           </p>
         </motion.div>
 

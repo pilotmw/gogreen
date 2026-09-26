@@ -18,12 +18,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import bground from "../../bground.webp";
-import {
-  featuredProject,
-  homeStats,
-  partnerSlots,
-  teamPreview,
-} from "@/data/homeContent";
+  import {
+    featuredProject,
+    homeStats,
+    homeStatsNote,
+    partnerSlots,
+    teamPreview,
+  } from "@/data/homeContent";
 
 export default function Home() {
   const whyCards: {
@@ -43,7 +44,11 @@ export default function Home() {
       icon: Users,
       title: "Community-Centred",
       description:
-        "Local ownership, participation, and income generation are designed into every programme we deliver.",
+        // PRE-OPERATIONAL REFRAME (Priority 2). ORIGINAL: "…are designed
+        // into every programme WE DELIVER." -> "every programme we plan to
+        // deliver": nothing has been delivered. The three commitments
+        // (local ownership, participation, income generation) UNCHANGED.
+        "Local ownership, participation, and income generation are designed into every programme we plan to deliver.",
       tone: "dark",
     },
     {
@@ -80,8 +85,10 @@ export default function Home() {
         tagline="Recovering waste, generating clean energy, and creating jobs across Malawi."
       />
 
-      {/* 02 — Stats Bar */}
-      <StatsBar stats={homeStats} />
+      {/* 02 — Stats Bar. NOTE: these were four invented figures
+          ("1,200+ tonnes" etc) shown as delivered results. Now empty,
+          with `note` stating we have not yet begun operations. */}
+      <StatsBar stats={homeStats} note={homeStatsNote} />
 
       {/* 03 — Challenges We Face */}
       <ChallengesSection />
@@ -95,19 +102,30 @@ export default function Home() {
       {/* 06 — What We Deliver */}
       <SolutionsSection />
 
-      {/* 07 — Case Study Spotlight */}
-      <CaseStudySpotlight project={featuredProject} />
+      {/* 07 — First Pilot Spotlight. Relabelled from "Case Study" and
+          "A closer look at the work on the ground", which both claimed
+          delivered work. Section props live here rather than being
+          changed in the component, so the component stays reusable. */}
+      <CaseStudySpotlight
+        project={featuredProject}
+        label="First Pilot"
+        title="Where we are starting"
+        subtitle="We are still forming our first pilot. Here is what we intend to build, and what is not yet decided."
+      />
 
-      {/* 08 — Our Impact */}
+      {/* 08 — Our Impact Goals. PRE-OPERATIONAL REFRAME (Priority 4):
+          eyebrow "Our Impact" → "Our Impact Goals" and the heading no
+          longer claims value is being created. Matches the /impact page
+          heading change. The nav label is untouched. */}
       <section className="py-20 md:py-24 bg-[#f6faf7]/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">
-              Our Impact
+              Our Impact Goals
             </p>
             <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.12] tracking-tight text-gray-900">
-              Creating environmental and economic value across Malawi through
-              circular economy solutions.
+              Creating environmental and economic value across Malawi is what
+              our circular economy solutions are designed to do.
             </h2>
           </div>
           <div className="mt-12 md:mt-16">

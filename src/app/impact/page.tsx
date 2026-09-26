@@ -66,30 +66,51 @@ import {
 export default function ImpactPage() {
   return (
     <>
-      {/* ── 1. HERO (unchanged) — now carries the page's <h1> ─────── */}
+      {/* ── 1. HERO — now carries the page's <h1> ───────────────────
+          PRE-OPERATIONAL REFRAME (Priority 4). Page heading retitled
+          "Our Impact" → "Our Impact Goals" and the subtitle reframed
+          from "Creating environmental and economic value through
+          circular economy solutions across Malawi" (an achieved
+          outcome) to intended impact.
+
+          PER THE BRIEF'S OWN INSTRUCTION, THE NAV LABEL IS UNCHANGED —
+          the Navbar still reads "Impact". Only the page heading moved.
+          Renaming the nav item is a client decision because it affects
+          main site navigation; the alternatives are listed in the
+          handover notes for their choice. */}
       <section className="bg-gradient-to-br from-green-900 via-green-800 to-blue-900 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             titleLevel="h1"
-            title="Our Impact"
-            subtitle="Creating environmental and economic value through circular economy solutions across Malawi."
+            title="Our Impact Goals"
+            subtitle="What our model is designed to achieve for the environment and the economy across Malawi. These are the goals we are building towards, not results we have delivered."
             centered={false}
             subtitleClass="text-white/90"
           />
         </div>
       </section>
 
-      {/* ── 2. METRICS (new) ──
-          PLACEHOLDER METRIC values throughout — every figure renders
-          "—" until the client supplies a real one. */}
+      {/* ── 2. METRICS ──────────────────────────────────────────────
+          Every value is an empty string, so all six render "-" and no
+          figure is ever shown. That discipline predates this brief and
+          is retained.
+
+          PRE-OPERATIONAL REFRAME (Priority 4): the block label and note
+          now state explicitly that these are the measures we INTEND to
+          report, not results. The old label "Our impact in numbers"
+          implied the numbers existed. The illustrative-target option
+          the brief permits was NOT taken — same reasoning as the
+          homepage stats bar: a figure rendered large next to a
+          reporting-period label reads as a result, however it is
+          labelled. */}
       <StatsBar
         stats={impactMetrics}
-        label="Our impact in numbers"
+        label="What we intend to measure"
         columns={3}
         note={
           reportingPeriod
             ? `Reporting period: ${reportingPeriod}.`
-            : "PLACEHOLDER METRICS — reporting period and all figures to be confirmed with the client before launch. No figures have been estimated or invented."
+            : "TARGETS, NOT RESULTS — Go Green Resources Limited is in its founding phase and has not yet begun operations. These are the measures we intend to report once our first pilots have run and the data is verified. No figure has been estimated or invented."
         }
       />
 
@@ -97,7 +118,7 @@ export default function ImpactPage() {
       <section id="impact-areas" className="py-16 bg-white md:py-20 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Where We Create Impact"
+            title="Where We Aim To Create Impact"
             subtitle="Our work delivers outcomes across these interconnected areas of environmental and economic value."
           />
           <div className="mt-12">

@@ -6,7 +6,15 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Go Green Resources Limited | Circular Economy Solutions in Malawi",
   description:
-    "Go Green Resources Limited develops circular economy solutions in Malawi that transform waste and underused resources into clean energy, recovered materials, sustainable products, and inclusive economic opportunity.",
+    // PRE-OPERATIONAL REFRAME (Priority 1). This is the site-wide meta
+    // description, i.e. the Google/search-preview and link-preview text
+    // for EVERY page, so it is the single most credibility-sensitive
+    // string on the site. ORIGINAL: "Go Green Resources Limited DEVELOPS
+    // circular economy solutions in Malawi THAT TRANSFORM waste and
+    // underused resources into…" -> "is building … DESIGNED TO turn":
+    // nothing has been developed and nothing has been transformed. All
+    // four outputs UNCHANGED.
+    "Go Green Resources Limited is building circular economy solutions in Malawi, designed to turn waste and underused resources into clean energy, recovered materials, sustainable products, and inclusive economic opportunity.",
   // CLIENT DECISION PENDING - meta-keywords. Retained from the previous
   // site, not added by the rebuild. Google has not used this tag for
   // ranking since 2009 and Bing treats it as a spam signal, so it does
@@ -40,7 +48,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Go Green Resources Limited | Circular Economy Solutions in Malawi",
     description:
-      "Transforming waste and underused resources into clean energy, recovered materials, sustainable products, and inclusive economic opportunity in Malawi.",
+      // ORIGINAL OG text: "TRANSFORMING waste and underused resources
+      // into…" — a present participle, so it described an action in
+      // progress. -> "Turning … designed to": intent, not activity. Kept
+      // deliberately close to the meta description above so the two
+      // never disagree.
+      "Turning waste and underused resources into clean energy, recovered materials, sustainable products, and inclusive economic opportunity — the approach Go Green Resources Limited is building in Malawi.",
     type: "website",
     locale: "en_MW",
   },

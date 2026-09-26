@@ -16,8 +16,18 @@ interface PartnerLogosProps {
 
 export default function PartnerLogos({
   partners,
-  label = "In partnership with",
-  note = "We work with government institutions, development partners, funders and private-sector clients.",
+  // ORIGINAL LABEL: "In partnership with". Rendered directly above the note
+  // on the homepage, so the strip read "In partnership with / We have no
+  // partners in place yet" - it contradicted its own disclaimer. The label
+  // now states the intent, and pairs with the reframed note below.
+  label = "Partners we are seeking",
+  // PRE-OPERATIONAL REFRAME (Priority 3). ORIGINAL: "We work with
+  // government institutions, development partners, funders and
+  // private-sector clients." A flat claim of an existing network, and it
+  // renders on the homepage and below the projects. Reframed to the
+  // relationship we are seeking, matching the /projects section heading
+  // "Partners We Are Seeking".
+  note = "We have no partners in place yet. These are the relationships we are seeking — government institutions, development partners, funders and private-sector clients.",
 }: PartnerLogosProps) {
   const prefersReducedMotion = useReducedMotion();
   const d = prefersReducedMotion ? 0 : undefined;

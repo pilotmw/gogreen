@@ -36,21 +36,23 @@ const STATUS_STYLES: Record<
   ProjectStatus,
   { badge: string; dot: string }
 > = {
-  Ongoing: {
-    badge: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-    dot: "bg-emerald-500",
+  // PRE-OPERATIONAL REFRAME (Priority 3): the "Ongoing", "Pilot" and
+  // "Completed" styles were deleted along with those statuses. An
+  // emerald "Ongoing" dot or a violet "Completed" badge is a visual
+  // claim of activity or completion, and there has been no activity to
+  // show. The two keys that remain are all pre-launch intent, so both
+  // use amber/amber to read as "not started" rather than progress.
+  "In development": {
+    badge: "bg-amber-50 text-amber-800 ring-amber-200",
+    dot: "bg-amber-500",
   },
-  Pilot: {
-    badge: "bg-sky-50 text-sky-800 ring-sky-200",
-    dot: "bg-sky-500",
+  "Seeking partners": {
+    badge: "bg-amber-50 text-amber-800 ring-amber-200",
+    dot: "bg-amber-400",
   },
   Planned: {
     badge: "bg-amber-50 text-amber-800 ring-amber-200",
     dot: "bg-amber-500",
-  },
-  Completed: {
-    badge: "bg-violet-50 text-violet-800 ring-violet-200",
-    dot: "bg-violet-500",
   },
 };
 

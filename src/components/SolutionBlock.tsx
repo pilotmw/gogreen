@@ -77,7 +77,13 @@ export default function SolutionBlock({
   title,
   description,
   benefits,
-  benefitsLabel = "Key Benefits",
+  /* PRE-OPERATIONAL REFRAME (this brief, Priority 2). Was "Key Benefits",
+     which read as benefits already delivered. The chips themselves are
+     outcome-phrased ("Reduced dependence on charcoal and firewood") and
+     rewriting all 25 into "Designed to reduce..." would read badly, so
+     the LABEL carries the framing instead: these are what each solution
+     is designed to deliver, not results in hand. */
+  benefitsLabel = "Designed to Deliver",
   image,
   stat,
   ctaLabel,

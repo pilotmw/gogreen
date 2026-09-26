@@ -41,7 +41,7 @@ export default function CaseStudySpotlight({
   return (
     <section
       ref={sectionRef}
-      aria-label="Featured case study"
+      aria-label="First pilot"
       className="relative overflow-hidden bg-[#f7fbf8]/80 py-20 md:py-24"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -106,7 +106,9 @@ export default function CaseStudySpotlight({
                 src={project.image}
                 alt={
                   project.imageAlt ??
-                  `${project.name} in ${project.location}`
+                  (project.location
+                    ? `${project.name} in ${project.location}`
+                    : project.name)
                 }
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
@@ -122,7 +124,11 @@ export default function CaseStudySpotlight({
               <WorkVisual
                 icon={workIcons[project.icon]}
                 gradient={project.gradient}
-                caption={`${project.location} — ${project.date}`}
+                caption={
+                  project.location && project.date
+                    ? `${project.location} — ${project.date}`
+                    : "First pilot — site and timing to be confirmed"
+                }
                 tall
               />
             </div>
@@ -131,16 +137,26 @@ export default function CaseStudySpotlight({
           {/* text panel */}
           <div className="flex flex-col justify-center p-7 md:p-10 lg:p-12">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              {/* PRE-OPERATIONAL REFRAME (this brief): `location` and
+                  `date` are now empty strings on the homepage's pilot,
+                  because no district or year has been chosen. Rendering
+                  the old empty-string value would have printed a bare
+                  " — " separator, so each falls back to an explicit
+                  "to be confirmed" note. `status` is also shown, as the
+                  component previously implied the work was delivered. */}
               <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-primary">
                 <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                {project.location}
+                {project.location || "Location to be confirmed"}
               </span>
               <span
                 aria-hidden="true"
                 className="hidden h-3 w-px bg-primary/25 sm:block"
               />
               <span className="text-[0.68rem] font-bold uppercase tracking-[0.22em] text-gray-500">
-                {project.date}
+                {project.date || "Timing to be confirmed"}
+              </span>
+              <span className="inline-flex w-fit items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-widest text-primary">
+                {project.status}
               </span>
             </div>
 
@@ -157,11 +173,15 @@ export default function CaseStudySpotlight({
               className="mt-8 h-px w-16 bg-gradient-to-r from-primary/60 to-transparent"
             />
 
+            {/* PRE-OPERATIONAL REFRAME: the CTA was a hardcoded "Read
+                full story", which pointed at a case study that does not
+                exist. It now comes from the project data so each caller
+                sets honest wording. */}
             <Link
               href={project.href}
               className="group/cta mt-6 inline-flex w-fit items-center gap-2.5 rounded-full bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-primary/25 transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              Read full story
+              {project.ctaLabel}
               <ArrowRight
                 className="h-4 w-4 transition-transform group-hover/cta:translate-x-1"
                 aria-hidden="true"
