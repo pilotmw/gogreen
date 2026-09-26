@@ -1,11 +1,14 @@
 import Hero from "@/components/Hero";
+import StatsBar from "@/components/StatsBar";
 import ChallengesSection from "@/components/ChallengesSection";
 import ResponseSection from "@/components/ResponseSection";
-import SolutionsSection from "@/components/SolutionsSection";
 import ThreePillarsSection from "@/components/ThreePillarsSection";
-import HomeNews from "@/components/HomeNews";
-import HomeGallery from "@/components/HomeGallery";
+import SolutionsSection from "@/components/SolutionsSection";
+import CaseStudySpotlight from "@/components/CaseStudySpotlight";
 import ImpactAreas from "@/components/ImpactAreas";
+import TeamPreview from "@/components/TeamPreview";
+import PartnerLogos from "@/components/PartnerLogos";
+import HomeNews from "@/components/HomeNews";
 import {
   RefreshCw,
   Users,
@@ -15,6 +18,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import bground from "../../bground.webp";
+import {
+  featuredProject,
+  homeStats,
+  partnerSlots,
+  teamPreview,
+} from "@/data/homeContent";
 
 export default function Home() {
   const whyCards: {
@@ -61,21 +70,35 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url("${bground.src}")` }}
       />
-<Hero
-  title="GoGreen Resources Limited"
-  subtitle="Building Circular Economy Solutions for a Cleaner, More Resource-Efficient Malawi"
-  primaryCTA={{ label: "Explore Our Solutions", href: "/solutions" }}
-  secondaryCTA={{ label: "Partner With Us", href: "/contact" }}
-/>
+      {/* 01 — Hero */}
+      <Hero
+        title="GoGreen Resources Limited"
+        subtitle="Building Circular Economy Solutions for a Cleaner, More Resource-Efficient Malawi"
+        primaryCTA={{ label: "Explore Our Solutions", href: "/solutions" }}
+        secondaryCTA={{ label: "Partner With Us", href: "/contact" }}
+        // PLACEHOLDER COPY — proof tagline to be confirmed with client
+        tagline="Recovering waste, generating clean energy, and creating jobs across Malawi."
+      />
 
+      {/* 02 — Stats Bar */}
+      <StatsBar stats={homeStats} />
+
+      {/* 03 — Challenges We Face */}
       <ChallengesSection />
 
+      {/* 04 — Our Response */}
       <ResponseSection />
 
+      {/* 05 — Three Focus Areas */}
       <ThreePillarsSection />
 
+      {/* 06 — What We Deliver */}
       <SolutionsSection />
 
+      {/* 07 — Case Study Spotlight */}
+      <CaseStudySpotlight project={featuredProject} />
+
+      {/* 08 — Our Impact */}
       <section className="py-20 md:py-24 bg-[#f6faf7]/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
@@ -93,8 +116,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 09 — Team / Leadership Preview */}
+      <TeamPreview members={teamPreview} />
+
+      {/* 10 — Partner / Funder Logo Strip */}
+      <PartnerLogos partners={partnerSlots} />
+
+      {/* 11 — News */}
       <HomeNews />
 
+      {/* 12 — Why Go Green Resources */}
       <section className="relative overflow-hidden bg-[#f2f8f3]/65 py-20 md:py-28">
         {/* green environmental backdrop — CSS only */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -206,8 +237,11 @@ export default function Home() {
         </div>
       </section>
 
-      <HomeGallery />
+      {/* "Our Work in Action" teaser removed per redesign spec — it duplicated
+          the Focus Areas and Impact sections. Its card treatment now lives on in
+          WorkTeaserCard, used by the Case Study Spotlight above. */}
 
+      {/* 13 — Final CTA */}
       <section
         className="py-12 md:py-16"
         style={{

@@ -1,14 +1,51 @@
-import SectionHeading from "@/components/SectionHeading";
-import {
-  Leaf,
-  Recycle,
-  Sprout,
-  Users,
-  ShieldCheck,
-  Flame,
-  ArrowRight,
-} from "lucide-react";
+/* ───────────────────────────────────────────────────────────────
+   SOLUTIONS PAGE — WHAT WAS FIXED / ADDED (client review)
+
+   1. KEY BENEFITS ORDERING BUG — FIXED. The five solutions were
+      hand-coded here, and the two sections that placed their benefits
+      column first (Materials Recovery, Community Livelihoods) used
+      `order-2 lg:order-1`, so those lists rendered BEFORE their own
+      heading — directly after the previous section's benefits, which
+      read as an off-by-one. All copy now lives in
+      src/data/solutionsContent.ts, one entry per solution, and every
+      section renders from a single <SolutionBlock /> in a fixed
+      reading order: icon → heading → intro → Key Benefits → CTA.
+      Materials Recovery and Community Livelihoods did have benefits;
+      they were only in the wrong position, and have been re-attached
+      to their own sections rather than rewritten. No claim was
+      invented. Advisory's list is a list of SERVICES, so it keeps an
+      honest "Key Services" label with the same visual treatment.
+
+   2. STANDARDISED TEMPLATE. One reusable component
+      (src/components/SolutionBlock.tsx) now renders all five
+      solutions, replacing the previous mix of benefits panel, services
+      panel and no panel at all.
+
+   3. IN-PAGE NAVIGATION ADDED. A sticky pill sub-nav jumps to all
+      five solutions. Anchor IDs are unchanged, so all existing inbound
+      links still resolve — /solutions#clean-energy,
+      /solutions#materials-recovery, /solutions#organic-waste,
+      /solutions#livelihoods (Navbar dropdown + homepage cards) and
+      /solutions#advisory. On narrow screens it becomes a horizontal
+      scrollable strip.
+
+   4. PLACEHOLDERS FLAGGED. No client photography and no verified
+      figures exist, so all five sections render a labelled dashed
+      placeholder box and a "—" placeholder stat. Both are marked
+      PLACEHOLDER in the markup. See src/data/solutionsContent.ts for
+      exactly what to supply.
+
+   5. UNCHANGED: the page intro (now correctly marked up as the
+      page's <h1>) and the bottom "Ready to Build Circular Solutions?"
+      CTA, which remains the main closing CTA for the page.
+   ─────────────────────────────────────────────────────────────── */
+
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+import SectionHeading from "@/components/SectionHeading";
+import SolutionBlock from "@/components/SolutionBlock";
+import { solutionNav, solutions } from "@/data/solutionsContent";
 
 export default function SolutionsPage() {
   return (
@@ -17,6 +54,7 @@ export default function SolutionsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="Our Solutions"
+            titleLevel="h1"
             subtitle="Practical circular economy solutions across clean energy, materials recovery, community livelihoods, and environmental services."
             centered={false}
             subtitleClass="text-white/90"
@@ -24,278 +62,51 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      <section id="clean-energy" className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Leaf className="h-8 w-8 text-primary" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Clean Energy &amp; Waste-to-Energy Solutions
-                </h2>
-              </div>
-              <p className="text-gray-700 mb-4 text-justify">
-                Go Green Resources Limited develops clean energy solutions that
-                convert organic and biomass waste into usable fuel and supports
-                adoption of cleaner cooking and energy technologies as
-                alternatives to charcoal and firewood.
-              </p>
-              <p className="text-gray-700 mb-4 text-justify">
-                This includes community-linked biogas systems using anaerobic
-                digestion to convert food waste, agricultural residues, and
-                animal waste into clean cooking fuel. The company also supports
-                access to clean cooking appliances and fuels through models
-                suited to target markets, including cylinder exchange,
-                institutional distribution, and bulk-user distribution.
-              </p>
-              <p className="text-gray-700 text-justify">
-                The remaining organic material is recovered as bio-slurry, an
-                organic fertiliser that returns nutrients to the soil and further
-                closes the resource loop.
-              </p>
-            </div>
-            <div className="bg-gray-50 p-8 rounded-lg">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
-                Key Benefits
-              </h3>
-              <div className="space-y-5">
-                {[
-                  "Reduced dependence on charcoal and firewood",
-                  "Lower household and institutional greenhouse gas emissions",
-                  "Affordable, reliable clean energy access",
-                  "Reduced deforestation and indoor air pollution",
-                  "Recovery of bio-slurry as organic fertiliser",
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-4">
-                    <div className="text-primary mt-1 flex-shrink-0">
-                      <Flame className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-700">{item}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* ── IN-PAGE SUB-NAV ──────────────────────────────
+          Sticky directly below the fixed Navbar (~4.5rem). Plain <a>
+          anchors are used so they work without JavaScript; the global
+          `scroll-behavior: smooth` in globals.css animates the jump. */}
+      <nav
+        aria-label="Solutions on this page"
+        className="sticky top-[4.5rem] z-30 border-b border-gray-100 bg-white/90 backdrop-blur"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ul className="flex gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:justify-center">
+            {solutionNav.map((item) => (
+              <li key={item.id} className="shrink-0">
+                <a
+                  href={`#${item.id}`}
+                  aria-label={`Jump to ${item.label}`}
+                  className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  {item.shortLabel}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-      </section>
+      </nav>
 
-      <section id="materials-recovery" className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="order-2 lg:order-1">
-              <div className="bg-white p-8 rounded-lg">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">
-                  Key Benefits
-                </h3>
-                <div className="space-y-5">
-                  {[
-                    "Reduction in urban waste pollution",
-                    "Diversion of recyclable materials from dumpsites and drainage systems",
-                    "Reduced energy intensity compared with primary material production",
-                    "Strengthened local circular supply chains",
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-4">
-                      <div className="text-primary mt-1 flex-shrink-0">
-                        <Recycle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-700">{item}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Recycle className="h-8 w-8 text-primary" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Materials Recovery &amp; Recycling
-                </h2>
-              </div>
-              <p className="text-gray-700 mb-4 text-justify">
-                Go Green Resources Limited builds structured recovery and
-                recycling networks for recyclable materials, beginning with
-                aluminium used beverage cans and extendable to other recoverable
-                waste streams.
-              </p>
-              <p className="text-gray-700 mb-4 text-justify">
-                The company works with community-based aggregators, retailers,
-                institutions, and commercial facilities to recover materials that
-                would otherwise pollute urban environments and waterways.
-                Recovered materials are sorted, processed, and channelled into
-                regional recycling and industrial value chains.
-              </p>
-              <p className="text-gray-700 text-justify">
-                By connecting communities to regional recycling markets, the
-                programme demonstrates that environmental sustainability and
-                economic development can work hand in hand.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="organic-waste" className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Sprout className="h-8 w-8 text-primary" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Organic Waste Valorisation
-                </h2>
-              </div>
-              <p className="text-gray-700 mb-4 text-justify">
-                Go Green Resources Limited is developing organic waste
-                valorisation activities including composting and black soldier
-                fly farming. These activities convert biodegradable waste into
-                soil inputs and protein for animal feed.
-              </p>
-              <p className="text-gray-700 mb-4 text-justify">
-                They extend the company&apos;s circular model into agriculture and food
-                systems while creating additional revenue streams and
-                environmental benefits, turning organic waste streams into
-                productive outputs.
-              </p>
-            </div>
-            <div className="bg-gray-50 p-8 rounded-lg">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
-                Key Benefits
-              </h3>
-              <div className="space-y-5">
-                {[
-                  "Converts biodegradable waste into useful products",
-                  "Produces soil inputs that support agriculture",
-                  "Generates protein for animal feed",
-                  "Creates additional revenue streams",
-                  "Reduces organic waste pollution",
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-4">
-                    <div className="text-primary mt-1 flex-shrink-0">
-                      <Sprout className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-700">{item}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="livelihoods" className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="order-2 lg:order-1">
-              <div className="bg-white p-8 rounded-lg">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">
-                  Key Benefits
-                </h3>
-                <div className="space-y-5">
-                  {[
-                    "Income for youth groups and women-led enterprises",
-                    "Opportunities for informal waste collectors",
-                    "Support for community-based entrepreneurs",
-                    "Local ownership and participation",
-                    "Dignified and inclusive green livelihoods",
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-4">
-                      <div className="text-primary mt-1 flex-shrink-0">
-                        <Users className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-700">{item}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Users className="h-8 w-8 text-primary" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Community Livelihoods &amp; Green Jobs
-                </h2>
-              </div>
-              <p className="text-gray-700 mb-4 text-justify">
-                Economic empowerment is embedded into Go Green Resources
-                programmes rather than being treated as a separate activity.
-                Aggregator and distribution networks create income opportunities
-                for youth groups, women-led enterprises, informal waste
-                collectors, and community-based entrepreneurs.
-              </p>
-              <p className="text-gray-700 text-justify">
-                These participants can earn income through collection, processing,
-                and distribution. Communities are active participants and economic
-                partners, not merely beneficiaries.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="advisory" className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <ShieldCheck className="h-8 w-8 text-primary" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Advisory, Carbon &amp; Environmental Services
-                </h2>
-              </div>
-              <p className="text-gray-700 mb-4 text-justify">
-                Go Green Resources Limited supports partners in structuring,
-                financing, and delivering environmental and circular economy
-                projects. Services include environmental consultancy, carbon
-                credit project development, technical support, implementation
-                support, waste infrastructure support, and clean energy programme
-                support.
-              </p>
-            </div>
-            <div className="bg-gray-50 p-8 rounded-lg">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
-                Our Services
-              </h3>
-              <div className="space-y-5">
-                {[
-                  "Environmental consultancy",
-                  "Carbon credit project development",
-                  "Technical support",
-                  "Implementation support",
-                  "Waste infrastructure support",
-                  "Clean energy programme support",
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-4">
-                    <div className="text-primary mt-1 flex-shrink-0">
-                      <ShieldCheck className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-700">{item}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {solutions.map((solution, i) => (
+        <SolutionBlock
+          key={solution.id}
+          id={solution.id}
+          icon={solution.icon}
+          title={solution.title}
+          description={solution.description}
+          benefits={solution.benefits}
+          benefitsLabel={solution.benefitsLabel}
+          image={solution.image}
+          stat={solution.stat}
+          ctaLabel={solution.ctaLabel}
+          ctaHref={solution.ctaHref}
+          /* Media alternates left/right, as on the original page.
+             Only the media column is reordered — the reading order of
+             heading, intro, benefits and CTA is identical every time. */
+          flip={i % 2 === 1}
+          tone={i % 2 === 0 ? "white" : "tint"}
+        />
+      ))}
 
       <section className="py-16 bg-gradient-to-r from-green-800 to-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

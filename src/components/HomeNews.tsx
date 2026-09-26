@@ -2,22 +2,30 @@
 
 import { motion } from "framer-motion";
 
+/* PLACEHOLDER DATES — no confirmed publication dates yet. Replace the
+   `date` values (and `dateTime`) with real ones before launch. */
 const newsItems = [
   {
     title: "Building a Circular Economy in Malawi",
     status: "Our Focus",
+    date: "March 2025",
+    dateTime: "2025-03",
     excerpt:
       "Go Green Resources Limited recovers waste and underused resources and converts them into clean energy, recovered materials, and sustainable livelihoods.",
   },
   {
     title: "Community Collection Networks",
     status: "Ongoing",
+    date: "June 2025",
+    dateTime: "2025-06",
     excerpt:
       "Our aggregator and community networks recover organic waste and recyclable materials while creating local income opportunities.",
   },
   {
     title: "Partnerships for Sustainable Impact",
     status: "Open",
+    date: "September 2025",
+    dateTime: "2025-09",
     excerpt:
       "We work with government institutions, development partners, financial institutions, and private-sector clients to deliver circular economy solutions.",
   },
@@ -53,7 +61,7 @@ export default function HomeNews() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
-                  className="grid gap-3 px-2 py-6 sm:grid-cols-[7rem_1fr] sm:gap-6 sm:px-3 md:grid-cols-[8rem_1fr] md:py-8"
+                  className="grid gap-3 px-2 py-6 sm:grid-cols-[8.5rem_1fr] sm:gap-6 sm:px-3 md:grid-cols-[9.5rem_1fr] md:py-8"
                 >
                   <div className="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-3">
                     <span
@@ -65,6 +73,12 @@ export default function HomeNews() {
                     <span className="inline-flex w-fit items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-widest text-primary">
                       {item.status}
                     </span>
+                    <time
+                      dateTime={item.dateTime}
+                      className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500"
+                    >
+                      {item.date}
+                    </time>
                   </div>
                   <div>
                     <h3 className="text-lg font-bold leading-snug tracking-tight text-gray-900 md:text-xl">

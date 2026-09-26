@@ -1,4 +1,25 @@
+/* ───────────────────────────────────────────────────────────────
+   LEADERSHIP — WHAT WAS ADDED (client review)
+
+   - Every card now carries a 1–2 sentence `bio` under the job title,
+     set in the page's secondary text style. `bio` is optional in the
+     type, so cards without one still render.
+   - Every card also accepts an optional `linkedin` URL, rendered as a
+     small labelled icon link beside the name. All five are currently
+     EMPTY — no social profiles have been supplied, and none were
+     guessed. Add the URL to an entry and the link appears.
+   - NAMES, TITLES AND HEADSHOTS ARE REAL AND UNCHANGED.
+
+   ⚠ ALL BIOS BELOW ARE PLACEHOLDER COPY — written to fill the layout
+   while the structure is agreed. Replace with client-approved
+   biographies (background, years of experience, area of focus)
+   before launch. The same placeholder bios exist for four of these
+   people in src/data/homeContent.ts (homepage TeamPreview); the two
+   lists should be consolidated into one source at some point.
+   ─────────────────────────────────────────────────────────────── */
+
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 
 import andrewKandiero from "../../Andrew Kandiero_Operations Manager.png";
 import jasonMtiwa from "../../Jason Mtiwa_ IT & Digital Officer.jpeg";
@@ -6,31 +27,51 @@ import marlynNyantahe from "../../Marlyn Nyantahe_Finance Manager.png";
 import thokozaniKamangira from "../../Thokozani Kamangira_Chief Executive Officer.png";
 import vitumbikoChirwa from "../../Vitumbiko Chirwa_Environmental Affairs Manager.png";
 
-const leaders = [
+interface Leader {
+  name: string;
+  occupation: string;
+  image: typeof thokozaniKamangira;
+  /** Optional. PLACEHOLDER COPY — confirm with client. */
+  bio?: string;
+  /** Optional. Empty until the client supplies a profile URL. */
+  linkedin?: string;
+}
+
+const leaders: Leader[] = [
   {
     name: "Thokozani Kamangira",
     occupation: "Chief Executive Officer",
     image: thokozaniKamangira,
+    // PLACEHOLDER BIO — confirm with client.
+    bio: "Sets the company's circular economy strategy and leads its partnerships with communities, investors and development partners.",
   },
   {
     name: "Andrew Kandiero",
     occupation: "Operations Manager",
     image: andrewKandiero,
+    // PLACEHOLDER BIO — confirm with client.
+    bio: "Runs resource recovery operations and the field delivery teams behind every collection and conversion site.",
   },
   {
     name: "Marlyn Nyantahe",
     occupation: "Finance Manager",
     image: marlynNyantahe,
+    // PLACEHOLDER BIO — confirm with client.
+    bio: "Oversees budgeting, reporting and the financial models that keep each programme commercially grounded.",
   },
   {
     name: "Vitumbiko Chirwa",
     occupation: "Environmental Affairs Manager",
     image: vitumbikoChirwa,
+    // PLACEHOLDER BIO — confirm with client.
+    bio: "Leads environmental compliance, monitoring and reporting across the company's waste and energy activities.",
   },
   {
     name: "Jason Mtiwa",
     occupation: "IT & Digital Officer",
     image: jasonMtiwa,
+    // PLACEHOLDER BIO — confirm with client.
+    bio: "Builds and maintains the data and digital systems used to measure recovered materials, energy and emissions.",
   },
 ];
 
@@ -84,12 +125,34 @@ export default function LeadershipSection() {
                 className="mt-4 h-0.5 w-10 rounded-full bg-gradient-to-r from-primary to-primary-light transition-all duration-300 group-hover:w-14"
               />
 
-              <h3 className="mt-3 text-xl font-bold tracking-tight text-gray-900 md:text-2xl">
-                {leader.name}
-              </h3>
-              <p className="mt-1.5 text-[0.68rem] font-bold uppercase leading-relaxed tracking-[0.16em] text-primary md:text-[0.72rem]">
-                {leader.occupation}
-              </p>
+              <div className="mt-3 flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="text-xl font-bold tracking-tight text-gray-900 md:text-2xl">
+                    {leader.name}
+                  </h3>
+                  <p className="mt-1.5 text-[0.68rem] font-bold uppercase leading-relaxed tracking-[0.16em] text-primary md:text-[0.72rem]">
+                    {leader.occupation}
+                  </p>
+                </div>
+                {/* Optional profile link — renders only when a URL exists. */}
+                {leader.linkedin && (
+                  <a
+                    href={leader.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${leader.name} on LinkedIn (opens in a new tab)`}
+                    className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/5 text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+
+              {leader.bio && (
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">
+                  {leader.bio}
+                </p>
+              )}
             </article>
           ))}
         </div>

@@ -4,7 +4,13 @@
    Pure SVG/CSS — no photographs, no literal illustrations, no icon libraries.
    All looping motion is slow and subtle and disabled under
    `prefers-reduced-motion`. The `ns` prop keeps SVG ids unique when several
-   visuals are mounted at once (desktop transitions + mobile accordion). */
+   visuals are mounted at once.
+
+   CURRENTLY UNUSED BY THE HOMEPAGE: the "What We Deliver" section was
+   simplified to icon + title + one sentence per solution, so these visuals
+   (and their RESOURCE / RECOVERY / PROCESS / VALUE tag words) are no longer
+   rendered there. Kept as reusable artwork for /solutions — delete if not
+   wanted. */
 
 export type VisualProps = { reduced: boolean; ns: string };
 

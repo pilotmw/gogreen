@@ -12,6 +12,8 @@ interface HeroProps {
   description?: string;
   primaryCTA?: { label: string; href: string };
   secondaryCTA?: { label: string; href: string };
+  /** Short proof-oriented line rendered below the CTA buttons. */
+  tagline?: string;
 }
 
 const valueIndicators = [
@@ -45,6 +47,7 @@ export default function Hero({
   description,
   primaryCTA,
   secondaryCTA,
+  tagline,
 }: HeroProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(1);
@@ -194,11 +197,38 @@ export default function Hero({
                 {description}
               </motion.p>
             )}
+
+            {/* VALUE INDICATORS — single inline row of small badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-6 flex flex-wrap items-center justify-center gap-2"
+            >
+              {valueIndicators.map((item) => (
+                <span
+                  key={item.label}
+                  className={[
+                    "inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5",
+                    "text-[0.66rem] font-semibold uppercase tracking-[0.14em] backdrop-blur-sm",
+                    "transition-colors duration-300 hover:bg-white/25",
+                    heroTextClass,
+                  ].join(" ")}
+                >
+                  <item.icon
+                    className="h-3.5 w-3.5 text-primary-light"
+                    aria-hidden="true"
+                  />
+                  {item.label}
+                </span>
+              ))}
+            </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center"
+              className="mt-8 flex flex-col sm:flex-row gap-3 md:gap-4 justify-center"
             >
               {primaryCTA && (
                 <Link
@@ -218,32 +248,20 @@ export default function Hero({
               )}
             </motion.div>
 
-            {/* VALUE INDICATORS — floating bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="mt-10"
-            >
-              <div className="mx-auto max-w-2xl grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 rounded-2xl border border-white/30 bg-white/20 px-4 py-4 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)] backdrop-blur-md">
-                {valueIndicators.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex items-center justify-center gap-2.5 hover:text-primary transition-colors group"
-                  >
-                    <div className="p-2 bg-white/70 rounded-lg backdrop-blur-sm group-hover:bg-primary/10 transition-colors">
-                      <item.icon
-                        className="h-5 w-5 text-primary group-hover:text-primary-dark transition-colors"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <span className={["text-sm font-medium", heroTextClass].join(" ")}>
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            {/* Proof line */}
+            {tagline && (
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.95 }}
+                className={[
+                  "mx-auto mt-8 max-w-2xl text-sm font-medium leading-relaxed md:text-base",
+                  heroTextClass,
+                ].join(" ")}
+              >
+                {tagline}
+              </motion.p>
+            )}
           </motion.div>
         </div>
       </div>

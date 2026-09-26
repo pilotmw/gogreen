@@ -8,13 +8,14 @@ import {
   useInView,
   useReducedMotion,
 } from "framer-motion";
-import { ArrowRight, ArrowUp } from "lucide-react";
+import { ArrowRight, ArrowUp, Recycle, Users, Zap } from "lucide-react";
 
 const pillars = [
   {
     number: "01",
     title1: "Clean Energy",
     title2: "& Resource Recovery",
+    icon: Zap,
     description:
       "We develop practical clean-energy and resource-recovery solutions that convert underused resources and waste streams into useful energy and productive outputs.",
     whatWeDo: [
@@ -30,6 +31,7 @@ const pillars = [
     number: "02",
     title1: "Materials Recycling",
     title2: "& Circular Supply Chains",
+    icon: Recycle,
     description:
       "We support the recovery, processing and circulation of materials, helping businesses and communities reduce waste while keeping valuable resources in productive use.",
     whatWeDo: [
@@ -45,6 +47,7 @@ const pillars = [
     number: "03",
     title1: "Inclusive",
     title2: "Green Livelihoods",
+    icon: Users,
     description:
       "We create opportunities for people and communities to participate in the green economy through skills, enterprise, employment and sustainable livelihood opportunities.",
     whatWeDo: [
@@ -69,6 +72,9 @@ const cardStyles = [
     glow: "bg-[radial-gradient(130%_90%_at_16%_0%,rgba(255,255,255,0.16),transparent_55%)]",
     number: "text-[#bbf7d0] group-hover:text-white",
     rule: "bg-white/20 group-hover:bg-white/45",
+    iconBox:
+      "bg-white/15 ring-1 ring-white/25 group-hover:bg-white/25",
+    iconColor: "text-white",
     title: "text-white",
     desc: "text-[#d1fae5]/85",
     hairline: "bg-white/15",
@@ -86,6 +92,9 @@ const cardStyles = [
     glow: "bg-[radial-gradient(130%_90%_at_16%_0%,rgba(34,197,94,0.13),transparent_55%)]",
     number: "text-primary-dark group-hover:text-primary",
     rule: "bg-primary/25 group-hover:bg-primary/55",
+    iconBox:
+      "bg-gradient-to-br from-primary/15 to-emerald-100 text-primary ring-1 ring-primary/20 [box-shadow:inset_0_1px_0_rgba(255,255,255,0.7)]",
+    iconColor: "text-primary",
     title: "text-gray-900",
     desc: "text-gray-600",
     hairline: "bg-primary/15",
@@ -103,6 +112,9 @@ const cardStyles = [
     glow: "bg-[radial-gradient(130%_90%_at_16%_0%,rgba(255,255,255,0.13),transparent_55%)]",
     number: "text-[#bbf7d0] group-hover:text-[#a7f3d0]",
     rule: "bg-white/20 group-hover:bg-white/45",
+    iconBox:
+      "bg-white/15 ring-1 ring-white/25 group-hover:bg-white/25",
+    iconColor: "text-white",
     title: "text-white",
     desc: "text-[#d1fae5]/85",
     hairline: "bg-white/15",
@@ -562,8 +574,22 @@ export default function ThreePillarsSection() {
                     />
 
                     <div className="relative z-10 flex h-full flex-col">
+                      {/* icon */}
+                      <span
+                        aria-hidden="true"
+                        className={[
+                          "flex h-14 w-14 items-center justify-center rounded-2xl transition-transform duration-500 group-hover:scale-105",
+                          style.iconBox,
+                        ].join(" ")}
+                      >
+                        <pillar.icon
+                          className={["h-7 w-7", style.iconColor].join(" ")}
+                          strokeWidth={1.7}
+                        />
+                      </span>
+
                       {/* number + rule */}
-                      <div className="flex items-center gap-3">
+                      <div className="mt-6 flex items-center gap-3">
                         <span
                           className={[
                             "text-sm font-black tracking-[0.3em] transition-colors duration-500",
@@ -725,28 +751,11 @@ export default function ThreePillarsSection() {
           </AnimatePresence>
         </div>
 
-        {/* ── transition into the seven-solution showcase ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: d ?? 0.7, delay: d ?? 0.2, ease: "easeOut" }}
-          className="mx-auto mt-20 max-w-3xl text-center md:mt-28"
-        >
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">
-            What We Deliver
-          </p>
-          <h2 className="mt-4 text-3xl font-extrabold leading-[1.1] tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            From Focus Areas to{" "}
-            <span className="bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
-              Practical Solutions
-            </span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-gray-600 text-pretty md:text-lg">
-            Within these three connected areas, GoGreen develops and operates
-            practical solutions that respond to real energy, resource,
-            environmental and livelihood needs.
-          </p>
-        </motion.div>
+        {/* REMOVED per redesign spec: the "What We Deliver — From Focus Areas to
+            Practical Solutions" transition block that used to sit here. It
+            duplicated the "What We Deliver" header + intro in SolutionsSection
+            (the root cause of the back-to-back repeated heading on the page).
+            SolutionsSection now owns that header and intro. */}
       </div>
     </section>
   );

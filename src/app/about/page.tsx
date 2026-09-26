@@ -1,3 +1,65 @@
+/* ───────────────────────────────────────────────────────────────
+   ABOUT PAGE — WHAT CHANGED (client review)
+
+   1. CIRCULAR MODEL CORRECTED TO 5 STEPS (critical). This page
+      described the model as "One system. Four moves." — Recover →
+      Convert → Distribute → Reinvest — which contradicted the
+      homepage's 5-step flow. "Create Value" is now step 04, in the
+      same position and with the same name as the homepage
+      (Recover → Convert → Distribute → Create Value → Reinvest), and
+      the heading and intro line were updated to say "Five moves".
+      Audited the whole codebase: the only other instance of the model
+      is the homepage "Our Response" flow in
+      src/components/ResponseSection.tsx, which already uses these
+      five names in this order. No other page describes the loop, so
+      the site is now consistent. (The About page's separate closing
+      brand line "Reduce. Recover. Reinvest." is a slogan, not a
+      process description, and was left alone — flag if it should go.)
+
+   2. "OUR VALUES" REWORDED TO REMOVE HOMEPAGE OVERLAP. About's values
+      are now framed as internal operating principles (how we behave);
+      the homepage's "Why Go Green Resources" keeps the external
+      differentiators (why a partner should choose us). Four values
+      were near-duplicates and were reworded — see the FLAGS block
+      below, which needs a client decision.
+
+   3. NEW: FOUNDING STORY TIMELINE. Year founded plus milestones,
+      using the same numbered 01/02/03 marker style as the Circular
+      Model. All dates and milestones are PLACEHOLDERS.
+
+   4. NEW: COMPANY INFO / LEGAL STRIP. The "Who We Are" info row now
+      also carries legal entity name, registration number and year of
+      incorporation. The registration number and incorporation year are
+      marked placeholders and have NOT been invented.
+
+   5. NEW: SUPPORTING PHOTO placeholder between Mission & Vision and
+      Who We Serve, to break up the text/headshot layout. Marked as a
+      placeholder — no suitable photography was available.
+
+   6. Team bios and optional profile links live in
+      src/components/LeadershipSection.tsx (placeholder bios).
+
+   FLAGS FOR CLIENT REVIEW — VALUES vs HOMEPAGE DIFFERENTIATORS
+   - "Community Empowerment" (here) was a near-duplicate of the
+     homepage's "Community-Centred" — both claimed local ownership,
+     participation and income generation. Reworded here to be about
+     sharing decision-making, which is an internal practice rather
+     than an external claim. RECOMMENDATION: keep the homepage's
+     "Community-Centred" as the external differentiator and let this
+     value carry only the "how we work with communities" point. If the
+     client wants a tighter page, drop one of the two.
+   - "Innovation" here was close to the homepage's "Scalable &
+     Adaptable" (both implied scalability). Reworded to be about
+     testing at small scale and what we reject, rather than
+     replicability.
+   - "Sustainability" here overlapped the homepage's "Commercially
+     Grounded" in tone (both about long-term viability). Reworded to
+     the trade-off principle — improving environment and economics
+     together rather than one at the expense of the other.
+   - "Circularity" and the homepage's "Integrated Model" were related
+     but distinguishable; only lightly tightened.
+   ─────────────────────────────────────────────────────────────── */
+
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -17,6 +79,9 @@ import {
   Zap,
   Share2,
   RefreshCw,
+  Coins,
+  Flag,
+  ImageOff,
 } from "lucide-react";
 import LeadershipSection from "@/components/LeadershipSection";
 
@@ -40,10 +105,43 @@ const stages = [
       "Value moves back into communities, households, businesses and productive systems.",
   },
   {
+    /* NEW — step 04. Added to match the homepage's 5-step model. */
+    icon: Coins,
+    title: "Create Value",
+    description:
+      "Environmental, social and economic value is generated across the chain, and captured so it can be measured and reinvested.",
+  },
+  {
     icon: RefreshCw,
     title: "Reinvest",
     description:
       "Economic and environmental value supports continued recovery, capability and circular growth.",
+  },
+];
+
+/* ── FOUNDING STORY ───────────────────────────────────────────
+   ⚠ PLACEHOLDER DATES AND MILESTONES. No founding history has been
+   supplied by the client, so the years are written as "20XX" and
+   each entry says what belongs there. Replace before launch — do
+   not publish as-is. */
+const milestones = [
+  {
+    year: "20XX",
+    title: "Company founded",
+    description:
+      "PLACEHOLDER — confirm the founding year and how the company was established.",
+  },
+  {
+    year: "20XX",
+    title: "First field project",
+    description:
+      "PLACEHOLDER — confirm the first operating project: location, partner and year.",
+  },
+  {
+    year: "20XX",
+    title: "First anchor partnership",
+    description:
+      "PLACEHOLDER — confirm the first significant funder, buyer or delivery partner, and the year.",
   },
 ];
 
@@ -86,30 +184,36 @@ const audiences = [
   },
 ];
 
+/* ── OUR VALUES ────────────────────────────────────────────────
+   Reframed as INTERNAL OPERATING PRINCIPLES — how the company
+   behaves day to day. The homepage's "Why Go Green Resources" keeps
+   the external differentiators (why a partner or investor should
+   choose us). Wording was tightened only where the two lists were
+   near-duplicates; see the FLAGS block at the top of this file. */
 const values = [
   {
     icon: Leaf,
     title: "Sustainability",
     description:
-      "We design solutions that create long-term environmental, social and economic value — not short-term fixes.",
+      "We improve the environment and the economics in the same intervention, rather than trading one against the other.",
   },
   {
     icon: Recycle,
     title: "Circularity",
     description:
-      "We keep materials, energy and value in productive use for as long as possible, closing resource loops.",
+      "We design out the idea of disposal, treating every waste stream as a resource still in productive use.",
   },
   {
     icon: Users,
     title: "Community Empowerment",
     description:
-      "Communities are partners in delivery, creating income for youth, women-led enterprises and informal collectors.",
+      "Communities are delivery partners, not recipients — we agree roles and decisions up front and are held to the commitments we set together.",
   },
   {
     icon: Lightbulb,
     title: "Innovation",
     description:
-      "We apply practical, scalable technologies and financing suited to Malawi's operating environment.",
+      "We test small before scaling and drop what does not hold up in the field; new technology has to earn its place on cost and reliability.",
   },
   {
     icon: ShieldCheck,
@@ -121,7 +225,7 @@ const values = [
     icon: HeartHandshake,
     title: "Inclusion",
     description:
-      "We prioritise women, youth and underserved communities in our livelihood and participation models.",
+      "We design livelihood and participation models so women, youth and underserved communities can take part on equal terms.",
   },
 ];
 
@@ -208,7 +312,47 @@ export default function AboutPage() {
                     value
                   </dd>
                 </div>
+
+                {/* ── LEGAL / REGISTRATION DETAIL ──
+                    Added for credibility. The registered name is taken
+                    from existing site copy; the registration number and
+                    incorporation year have NOT been invented and are
+                    shown as placeholders. */}
+                <div className="!mt-6 border-t border-primary/10 pt-4">
+                  <dt className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                    Legal Entity
+                  </dt>
+                  <dd className="mt-1 text-gray-700">
+                    Go Green Resources Limited
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                    Registration Number
+                  </dt>
+                  <dd className="mt-1 flex flex-wrap items-center gap-2 text-gray-700">
+                    <span>—</span>
+                    <span className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-amber-700">
+                      Placeholder
+                    </span>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                    Year of Incorporation
+                  </dt>
+                  <dd className="mt-1 flex flex-wrap items-center gap-2 text-gray-700">
+                    <span>—</span>
+                    <span className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-amber-700">
+                      Placeholder
+                    </span>
+                  </dd>
+                </div>
               </dl>
+              <p className="mt-4 pl-5 text-xs leading-relaxed text-gray-500">
+                Registration number and year of incorporation to be confirmed by
+                the client.
+              </p>
             </div>
             <div className="space-y-5 text-base leading-relaxed text-gray-700 md:text-lg lg:col-span-7">
               <p>
@@ -233,7 +377,55 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 3. THE CIRCULAR MODEL ───────────────────────── */}
+      {/* ── 3. FOUNDING STORY ────────────────────────────
+          New. Numbered 01/02/03 markers reuse the Circular Model's
+          styling so the page keeps one visual language. Every date
+          and milestone below is a PLACEHOLDER. */}
+      <section className="bg-[#f6faf7]/70 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">
+              Our Story
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold leading-[1.12] tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+              How we got here.
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
+              From a founding idea to a working collection, conversion and
+              livelihoods network.
+            </p>
+          </div>
+
+          <ol className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-3 md:gap-8">
+            {milestones.map((milestone, i) => (
+              <li
+                key={milestone.title}
+                className="relative flex flex-col rounded-3xl border border-primary/10 bg-white/85 p-7 backdrop-blur-sm"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-emerald-100 text-primary ring-1 ring-primary/20">
+                    <Flag className="h-6 w-6" strokeWidth={1.6} aria-hidden="true" />
+                  </span>
+                  <span className="text-2xl font-black tabular-nums tracking-tight text-primary/20">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                  {milestone.year}
+                </p>
+                <h3 className="mt-1.5 text-lg font-bold tracking-tight text-gray-900">
+                  {milestone.title}
+                </h3>
+                <p className="mt-2 text-[0.95rem] leading-[1.7] text-gray-600">
+                  {milestone.description}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 4. THE CIRCULAR MODEL ───────────────────────── */}
       <section id="circular-model" className="relative overflow-hidden bg-[#f2f8f3]/65 py-20 md:py-28">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="absolute -top-32 left-1/2 h-[30rem] w-[44rem] -translate-x-1/2 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,rgba(187,247,208,0.45),transparent_70%)] blur-2xl" />
@@ -248,11 +440,11 @@ export default function AboutPage() {
               The Circular Model
             </p>
             <h2 className="mt-4 text-3xl font-extrabold leading-[1.12] tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-              One system. Four moves.
+              One system. Five moves.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
-              Recover, convert, distribute, reinvest — the loop that keeps
-              value in productive use and grows the system over time.
+              Recover, convert, distribute, create value, reinvest — the loop
+              that keeps value in productive use and grows the system over time.
             </p>
           </div>
 
@@ -293,7 +485,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 4. MISSION & VISION ─────────────────────────── */}
+      {/* ── 5. MISSION & VISION ─────────────────────────── */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
@@ -331,7 +523,34 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 5. WHO WE SERVE ─────────────────────────────── */}
+      {/* ── 6. SUPPORTING PHOTO ───────────────────────────
+          New. A non-headshot image to break up the text/leadership
+          layout. PLACEHOLDER — no suitable photography of the office,
+          a field visit or the team at work was available, so this is
+          a labelled empty frame. Replace the <div> with a next/image
+          when the client supplies a photo. (Hero_2.jpg exists on the
+          site but is the homepage hero image, so it was not reused
+          here.) */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            role="img"
+            aria-label="Placeholder image: the Go Green Resources team at work on site in Malawi. Awaiting client photography."
+            className="flex aspect-[16/9] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-primary/30 bg-[#f6faf7]/70 p-6 text-center"
+          >
+            <ImageOff className="h-9 w-9 text-primary/60" aria-hidden="true" />
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Placeholder image
+            </p>
+            <p className="max-w-md text-sm leading-relaxed text-gray-600">
+              [ PLACEHOLDER: team at work / field visit / office photograph — to
+              be supplied by the client ]
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. WHO WE SERVE ─────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#f6faf7]/70 py-20 md:py-28">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="absolute -top-32 right-1/4 h-[28rem] w-[34rem] -translate-x-1/2 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,rgba(187,247,208,0.35),transparent_70%)] blur-2xl" />
@@ -369,7 +588,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 6. CORE VALUES ──────────────────────────────── */}
+      {/* ── 8. CORE VALUES ──────────────────────────────── */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
@@ -404,10 +623,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 7. LEADERSHIP ───────────────────────────────── */}
+      {/* ── 9. LEADERSHIP ───────────────────────────────── */}
       <LeadershipSection />
 
-      {/* ── 8. CLOSING BRAND STATEMENT ──────────────────── */}
+      {/* ── 10. CLOSING BRAND STATEMENT ──────────────────── */}
       <section
         className="py-16 md:py-24"
         style={{
@@ -426,7 +645,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 9. FINAL CTA ────────────────────────────────── */}
+      {/* ── 11. FINAL CTA ────────────────────────────────── */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">

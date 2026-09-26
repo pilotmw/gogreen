@@ -11,21 +11,38 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-interface ImpactArea {
+export interface ImpactMetric {
+  /** Verbatim figure, e.g. "1,240 tonnes". Rendered as "—" when empty. */
+  value: string;
+  /** What the figure measures, e.g. "diverted from dumpsites in 2025". */
+  label: string;
+  /** Renders a visible PLACEHOLDER METRIC flag. True while `value` is
+      empty. See src/data/impactContent.ts — no verified figures exist. */
+  isPlaceholder?: boolean;
+}
+
+export interface ImpactArea {
   title: string;
   headline: string;
   description: string;
   icon: LucideIcon;
   featured?: boolean;
   span: string;
+  /** Optional per-card metric line, rendered above the headline. Only the
+      /impact page supplies these — the homepage passes no data and its
+      cards are unchanged. */
+  metric?: ImpactMetric;
 }
 
+/* NOTE: descriptions were trimmed ~25% per redesign spec now that the Stats Bar
+   carries the headline numbers. These cards explain mechanism, not impact
+   claims. TRIMMED DRAFT COPY — confirm final wording with client. */
 const impactAreas: ImpactArea[] = [
   {
     title: "Clean Energy",
     headline: "Powering a cleaner, more sustainable Malawi.",
     description:
-      "We develop and promote clean, affordable energy solutions that reduce dependence on fossil fuels and unreliable traditional energy sources. Our approach includes renewable energy, solar power, biogas, energy-efficient technologies, and sustainable mobility solutions that help households and businesses access cleaner energy while reducing emissions.",
+      "We develop and promote clean, affordable energy solutions — renewable energy, solar power, biogas and energy-efficient technologies — that reduce dependence on fossil fuels and unreliable traditional sources.",
     icon: Sun,
     featured: true,
     span: "lg:col-span-7",
@@ -34,7 +51,7 @@ const impactAreas: ImpactArea[] = [
     title: "Waste Recovery",
     headline: "Turning waste into valuable resources.",
     description:
-      "We turn waste into valuable resources through collection, sorting, recycling, reuse, composting, and energy recovery. Instead of allowing waste to end up in landfills, waterways, and open spaces, we create systems that recover materials and convert organic waste into useful products such as compost, biogas, and other forms of energy.",
+      "We create collection, sorting, recycling, reuse and composting systems so waste is recovered rather than landfilled, waterways or open space.",
     icon: Recycle,
     span: "lg:col-span-5",
   },
@@ -42,7 +59,7 @@ const impactAreas: ImpactArea[] = [
     title: "Green Jobs",
     headline: "Creating livelihoods through the green economy.",
     description:
-      "We create opportunities for meaningful employment and entrepreneurship within Malawi's growing green economy. From waste collection and recycling to renewable energy installation, maintenance, manufacturing, and distribution, our work supports skills development, local businesses, and sustainable livelihoods—particularly for young people and communities.",
+      "Across collection, recycling, installation, maintenance, manufacturing and distribution, we back skills development and local businesses — particularly for young people.",
     icon: BriefcaseBusiness,
     span: "lg:col-span-5",
   },
@@ -50,7 +67,7 @@ const impactAreas: ImpactArea[] = [
     title: "Circular Supply Chains",
     headline: "Keeping resources in use and value within our communities.",
     description:
-      "We help build supply chains where materials are kept in productive use for as long as possible. By connecting waste producers, collectors, recyclers, manufacturers, farmers, businesses, and consumers, we enable resources to move back into the economy instead of becoming waste. This reduces resource consumption, lowers costs, and strengthens local industries.",
+      "We connect waste producers, collectors, recyclers, manufacturers, farmers, businesses and consumers so materials move back into the economy instead of becoming waste.",
     icon: Network,
     featured: true,
     span: "lg:col-span-7",
@@ -59,7 +76,7 @@ const impactAreas: ImpactArea[] = [
     title: "Community Empowerment",
     headline: "Building skills, opportunities, and sustainable communities.",
     description:
-      "We believe sustainable development starts with empowered communities. We work with households, businesses, institutions, and local communities to promote environmental awareness, practical skills, clean technologies, and income-generating opportunities. By involving communities directly, we help create solutions that are locally relevant, inclusive, and sustainable.",
+      "We work directly with households, businesses, institutions and communities on environmental awareness, practical skills, clean technologies and income-generating opportunities.",
     icon: HeartHandshake,
     span: "lg:col-span-6",
   },
@@ -67,16 +84,23 @@ const impactAreas: ImpactArea[] = [
     title: "Environmental Protection",
     headline: "Protecting our environment for generations to come.",
     description:
-      "Our solutions are designed to protect Malawi's land, water, air, and natural ecosystems. By reducing pollution, improving waste management, promoting renewable energy, and encouraging responsible resource use, we contribute to healthier communities and a cleaner environment while supporting long-term climate resilience.",
+      "By reducing pollution, improving waste management, promoting renewable energy and encouraging responsible resource use, we support healthier communities and long-term climate resilience.",
     icon: Leaf,
     span: "lg:col-span-6",
   },
 ];
 
-export default function ImpactAreas() {
+interface ImpactAreasProps {
+  /** Overrides the built-in cards. The homepage passes nothing and keeps
+      the mechanism-only wording; /impact passes its own set, where each
+      card carries a metric and a shorter description. */
+  areas?: ImpactArea[];
+}
+
+export default function ImpactAreas({ areas = impactAreas }: ImpactAreasProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-8">
-      {impactAreas.map((area, idx) => (
+      {areas.map((area, idx) => (
         <motion.article
           key={area.title}
           initial={{ opacity: 0, y: 26 }}
@@ -121,6 +145,7 @@ export default function ImpactAreas() {
                 <h3 className="mt-5 text-lg font-extrabold tracking-tight text-gray-900 md:text-xl">
                   {area.title}
                 </h3>
+                <Metric metric={area.metric} />
                 <p className="mt-2 text-lg font-bold leading-snug text-gray-900 md:text-xl">
                   {area.headline}
                 </p>
@@ -141,6 +166,7 @@ export default function ImpactAreas() {
               <h3 className="mt-5 text-lg font-extrabold tracking-tight text-gray-900 md:text-xl">
                 {area.title}
               </h3>
+              <Metric metric={area.metric} />
               <p className="mt-2 text-lg font-bold leading-snug text-gray-900">
                 {area.headline}
               </p>
@@ -151,6 +177,30 @@ export default function ImpactAreas() {
           )}
         </motion.article>
       ))}
+    </div>
+  );
+}
+
+function Metric({ metric }: { metric?: ImpactMetric }) {
+  if (!metric) return null;
+  /* An empty value means the figure has not been supplied, so the flag
+     is derived rather than trusted — it clears itself automatically once
+     a real number is added. */
+  const isPlaceholder = metric.isPlaceholder ?? !metric.value.trim();
+
+  return (
+    <div className="mt-4 rounded-xl border border-primary/15 bg-white/70 p-3.5">
+      <p className="text-2xl font-black leading-none tabular-nums tracking-tight text-primary md:text-[1.7rem]">
+        {metric.value.trim() || "—"}
+      </p>
+      <p className="mt-1.5 text-xs leading-relaxed text-gray-600">
+        {metric.label}
+      </p>
+      {isPlaceholder && (
+        <p className="mt-2.5 inline-block rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-amber-700">
+          Placeholder metric
+        </p>
+      )}
     </div>
   );
 }
