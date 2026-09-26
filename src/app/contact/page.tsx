@@ -52,6 +52,14 @@
       carries role="status" + aria-live so it is announced to screen
       readers instead of appearing silently.
 
+5. MISSING <h1> FIXED. This page was the only one on the site with NO
+   <h1> at all: the hero title rendered through <SectionHeading />,
+   which defaults to an <h2>, so the document outline started at h2 and
+   the page had no top-level heading. SectionHeading already supported a
+   `titleLevel` prop, so this is a one-line change — the hero title is
+   now the page's <h1>. Every other page was checked and already had
+   exactly one h1 with no skipped levels.
+
    ⚠ NOT CHANGED — NEEDS CLIENT INPUT
    - Address: still "Specific address available upon request". No
       street or area detail has been supplied, so none was invented.
@@ -167,6 +175,7 @@ export default function ContactPage() {
             subtitle="Get in touch to explore partnerships, project enquiries, clean energy opportunities, recycling partnerships, or advisory engagements."
             centered={false}
             subtitleClass="text-white/90"
+            titleLevel="h1"
           />
         </div>
       </section>

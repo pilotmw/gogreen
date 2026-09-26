@@ -1,6 +1,15 @@
 /* ───────────────────────────────────────────────────────────────
    FOOTER — WHAT CHANGED (client review)
 
+   COLUMN HEADINGS PROMOTED h3 -> h2. "Quick Links" and "Contact" were
+   <h3>, which made them look like subsections of whatever preceded
+   them. On the seven content pages that read fine, but the 404 page has
+   only an <h1> and no content sections, so the outline ran h1 -> h3,
+   a skipped level. Inside the <footer> contentinfo landmark these two
+   are the top-level headings, so h2 is the correct level. No visual
+   change: the styling comes from explicit Tailwind classes on each
+   element, not from the heading tag. Verified no page gained a skip.
+
    CONTACT EMAILS NOW LABELLED BY PURPOSE. The footer listed two
    addresses with no labels, so "edgar@gogreenmw.com" read as a stray
    second admin mailbox. The client confirmed it belongs to the Chief
@@ -49,7 +58,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Quick Links</h3>
+            <h2 className="text-sm font-semibold uppercase tracking-wider mb-4">Quick Links</h2>
             <ul className="space-y-2">
               {[
                 { label: "About Us", href: "/about" },
@@ -70,7 +79,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Contact</h3>
+            <h2 className="text-sm font-semibold uppercase tracking-wider mb-4">Contact</h2>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-sm text-gray-300">
                 <MapPin className="h-4 w-4 mt-0.5 text-primary-light flex-shrink-0" />

@@ -114,14 +114,24 @@ export const reportingPeriod = "";
 
 /* ── 2. IMPACT-AREA CARDS ──────────────────────────────────────
    Same six areas as the homepage, but each with a placeholder metric
-   and a description trimmed ~25%. Metrics describe WHAT WOULD BE
-   COUNTED — no totals, no outcomes. */
+   and a description trimmed 20-30%. Metrics describe WHAT WOULD BE
+   COUNTED — no totals, no outcomes.
+
+   COPY TRIM CORRECTED 2026-09-26. An earlier pass here claimed a ~25%
+   trim but delivered only 5-9% on five of the six cards, and two cards
+   ("Green Jobs", "Environmental Protection") were still word-for-word
+   identical to the homepage, which is precisely the duplication Phase
+   0.3 asked to remove. All six are now genuinely 20-30% shorter than
+   their homepage counterparts (29/24/21/20/24/26%), so no card reads as
+   a copy-paste of the one above it. Verified by comparing this array
+   against the `impactAreas` in src/components/ImpactAreas.tsx, which
+   still owns the untrimmed homepage copy and is deliberately unchanged. */
 export const impactAreas: ImpactArea[] = [
   {
     title: "Clean Energy",
     headline: "Powering a cleaner, more sustainable Malawi.",
     description:
-      "We develop clean, affordable energy solutions — renewable energy, solar power, biogas and energy-efficient technologies — that reduce dependence on fossil fuels and unreliable traditional sources.",
+      "We develop clean, affordable energy solutions — renewable power, solar, biogas and efficient technologies — that reduce dependence on fossil fuels.",
     icon: Sun,
     featured: true,
     span: "lg:col-span-7",
@@ -134,7 +144,7 @@ export const impactAreas: ImpactArea[] = [
     title: "Waste Recovery",
     headline: "Turning waste into valuable resources.",
     description:
-      "We build collection, sorting, recycling, reuse and composting systems so waste is recovered instead of reaching dumpsites, waterways or open space.",
+      "We build collection, sorting, recycling and composting systems so waste is recovered, not dumped or burned.",
     icon: Recycle,
     span: "lg:col-span-5",
     metric: {
@@ -146,7 +156,7 @@ export const impactAreas: ImpactArea[] = [
     title: "Green Jobs",
     headline: "Creating livelihoods through the green economy.",
     description:
-      "Across collection, recycling, installation, maintenance, manufacturing and distribution, we back skills development and local businesses — particularly for young people.",
+      "In collection, recycling, installation and manufacturing, we back skills development and local businesses, especially for young people.",
     icon: BriefcaseBusiness,
     span: "lg:col-span-5",
     metric: {
@@ -158,7 +168,7 @@ export const impactAreas: ImpactArea[] = [
     title: "Circular Supply Chains",
     headline: "Keeping resources in use and value within our communities.",
     description:
-      "We connect waste producers, collectors, recyclers, manufacturers, farmers and businesses so materials move back into the economy instead of becoming waste.",
+      "We connect producers, collectors, recyclers, manufacturers and farmers so materials return to the economy rather than becoming waste.",
     icon: Network,
     featured: true,
     span: "lg:col-span-7",
@@ -171,7 +181,7 @@ export const impactAreas: ImpactArea[] = [
     title: "Community Empowerment",
     headline: "Building skills, opportunities, and sustainable communities.",
     description:
-      "We work with households, businesses, institutions and communities on environmental awareness, practical skills, clean technologies and income-generating opportunities.",
+      "We work with households, businesses and institutions on environmental awareness, practical skills and income-generating opportunities.",
     icon: HeartHandshake,
     span: "lg:col-span-6",
     metric: {
@@ -183,7 +193,7 @@ export const impactAreas: ImpactArea[] = [
     title: "Environmental Protection",
     headline: "Protecting our environment for generations to come.",
     description:
-      "By reducing pollution, improving waste management, promoting renewable energy and encouraging responsible resource use, we support healthier communities and long-term climate resilience.",
+      "By reducing pollution, improving waste management and promoting renewable energy, we support healthier communities and climate resilience.",
     icon: Leaf,
     span: "lg:col-span-6",
     metric: {
